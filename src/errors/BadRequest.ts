@@ -4,6 +4,6 @@ export class BadRequest extends BaseError {
 	constructor(
 		message: string = "Desculpe, houve um problema com a sua solicitação",
 	){
-		super(message, 200);
+		super(message, 400);
 	}
 }

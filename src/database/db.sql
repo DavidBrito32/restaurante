@@ -13,4 +13,3 @@ CREATE TABLE IF NOT EXISTS users(
     address TEXT NOT NULL
 );
 
-PRAGMA table_info(users);

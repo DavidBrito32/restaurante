@@ -1,3 +1,4 @@
+import { UpdateUserDB, UsersDB } from "../../database/users";
 import { GetUsers } from "../../dto/users";
 
 export class UserModel {
@@ -94,6 +95,8 @@ export class UserModel {
         this.address = address;
     }
 
+    //metodos para retornar DTO para o database
+
     public GetUser = (): GetUsers => {
         return {
             id: this.getId(),
@@ -105,6 +108,20 @@ export class UserModel {
             address: this.getAddress(),
             age: this.getAge(),
             schooling: this.getSchooling()
+        }
+    }
+
+    public UpdateUser = (): UpdateUserDB => {
+        return {
+            name: this.getName(),
+            email: this.getEmail(),
+            cpf: this.getCpf(),
+            role: this.getRole(),
+            is_active: this.getIsActive(),
+            address: this.getAddress(),
+            age: this.getAge(),
+            schooling: this.getSchooling(),
+            password: this.getPassword()
         }
     }
 }

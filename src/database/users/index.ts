@@ -13,6 +13,18 @@ export interface UsersDB {
     address: string,
 }
 
+export interface UpdateUserDB {
+    name: string;
+    cpf: string;
+    email: string;
+    password: string,
+    role: string,
+    schooling: string,
+    age: number,
+    is_active: boolean,
+    address: string,
+}
+
 
 export class UserDataBase extends Db {
    
@@ -30,12 +42,16 @@ export class UserDataBase extends Db {
         return await Db.connection(UserDataBase.TABLE).select("*").where({ email });
     }
 
+    public findUserByCPF = async (cpf: string): Promise<Array<UsersDB>>  => {
+        return await Db.connection(UserDataBase.TABLE).select("*").where({ cpf });
+    }
+
     public insertUser = async (data: UsersDB): Promise<void> => {
         await Db.connection.insert(data).into("users");
     }
 
-    public updateUser = async (id: string, data: UsersDB): Promise<void> => {
-        await Db.connection.update(data).from("users").where({id});
+    public updateUser = async (id: string, data: UpdateUserDB): Promise<void> => {
+        await Db.connection.update(data).from(UserDataBase.TABLE).where({id});
     }
 
     public removeUser = async (id: string): Promise<void> => {

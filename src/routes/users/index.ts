@@ -12,3 +12,9 @@ const controller = new UserController(new UsersBusiness(new UserDataBase(), new 
 users.get("/", controller.getAllUsers);
 
 users.post("/", controller.createUser);
+
+users.post("/login", controller.login);
+
+users.put("/update/:id", controller.updateUser);
+
+users.delete("/:id", controller.deleteUser);
