@@ -5,7 +5,8 @@ dotenv.config();
 
 export enum ROLE {
 	ADMIN = "ADMIN",
-	OPERADOR = "OPERADOR"
+	OPERADOR = "OPERADOR",
+	COSTUMER = "COSTUMER"
 }
 
 export interface TokenPayload {

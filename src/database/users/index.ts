@@ -25,7 +25,6 @@ export interface UpdateUserDB {
     address: string,
 }
 
-
 export class UserDataBase extends Db {
    
     public static TABLE: string = "users";
