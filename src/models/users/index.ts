@@ -1,4 +1,4 @@
-import { UpdateUserDB, UsersDB } from "../../database/users";
+import { UpdateUserDB } from "../../database/users";
 import { GetUsers } from "../../dto/users";
 
 export class UserModel {
