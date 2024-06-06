@@ -1,17 +1,5 @@
+import { UsersDB } from "../../dto/users/db";
 import { Db } from "../db";
-
-export interface UsersDB {
-    id: string,
-    name: string;
-    cpf: string;
-    email: string;
-    password: string,
-    role: string,
-    schooling: string,
-    age: number,
-    is_active: boolean,
-    address: string,
-}
 
 export interface UpdateUserDB {
     name: string;

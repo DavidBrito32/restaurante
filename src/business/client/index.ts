@@ -55,6 +55,7 @@ export class ClientBusiness {
             email: exists.email,
             role: exists.role
         }
+        
         const token = this.tokenManager.createToken(payload);
         
         return {message: `Seja bem vindo ${payload.name}`, token};

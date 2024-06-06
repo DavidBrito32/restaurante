@@ -1,4 +1,4 @@
-import { UpdateUserDB, UserDataBase, UsersDB } from "../../database/users";
+import { UpdateUserDB, UserDataBase } from "../../database/users";
 import {
     DeleteUserInputDTO,
   DeleteUserOutputDTO,
@@ -13,6 +13,7 @@ import {
   UpdateUserOutputDTO,
   createUserOutputDTO,
 } from "../../dto/users";
+import { UsersDB } from "../../dto/users/db";
 import { BadRequest } from "../../errors/BadRequest";
 import { NotFound } from "../../errors/NotFound";
 import { Unouthorized } from "../../errors/Unouthorized";
@@ -239,5 +240,5 @@ export class UsersBusiness {
     return {
         message: "Usuario deletado com sucesso!"
     };
-  } //OK ✅
+  }  //OK ✅
 }
