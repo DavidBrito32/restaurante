@@ -15,6 +15,8 @@ users.post("/", controller.createUser);
 
 users.post("/login", controller.login);
 
+users.post("/logof", controller.logof);
+
 users.put("/update/:id", controller.updateUser);
 
 users.delete("/:id", controller.deleteUser);

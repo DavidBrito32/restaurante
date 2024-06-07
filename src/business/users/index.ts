@@ -154,8 +154,7 @@ export class UsersBusiness {
         const verifyToken = this.token.getPayload(authorization.split(" ")[1]);
         if (verifyToken === null) {
           throw new BadRequest("Você não tem permissão para acessar este recurso");
-        }
-        
+        }        
         const [exists] = await this.DB.findUserById(verifyToken.id);
 
         if(exists.id !== verifyToken.id){

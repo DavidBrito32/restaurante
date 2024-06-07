@@ -121,10 +121,9 @@ export interface LogoffOutputDTO {
     message: string;
 }
 
-
 export const LogoffSchema = z.object({
     authorization: z.string({
-        required_error: "'authorization' - é um campo obrigatorio",
+        required_error: "'authorization' - é um campo obrigatorio e deve ser enviado no header como um Bearer Token",
         invalid_type_error: "'authorization' - deve ser enviado no formato string"
     }).min(20)
 }).transform(data => data as LogoffInputDTO);
