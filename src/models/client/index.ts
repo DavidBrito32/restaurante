@@ -1,4 +1,5 @@
-import { Client_TableDB } from "../../dto/client/db";
+import { updateClient } from "../../dto/client";
+import { Client_TableDB, updateClientDB } from "../../dto/client/db";
 import { ROLE } from "../../services/tokenManager";
 
 export class ClientModel {
@@ -70,5 +71,17 @@ export class ClientModel {
             role: ROLE.COSTUMER
         }
     }
+
+    public updateClientDB = (): updateClientDB => {
+        return {
+            id: this.getId(),
+            name: this.getName(),
+            email: this.getEmail(),
+            password: this.getPassword(),
+            date_of_birth: this.getDateOfBirth() as string,
+            role: ROLE.COSTUMER
+        }
+    }
+
 
 }

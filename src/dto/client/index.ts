@@ -8,11 +8,11 @@ export interface SignupClientInputDTO {
     email: string;
     cpf: string;
     dateOfBirth?: string | null;
-}   
+};
 
 export interface SignupClientOutputDTO {
     message: string;
-}
+};
 
 export const SignupClientSchema = z.object({
     name: z.string({
@@ -42,12 +42,12 @@ export const SignupClientSchema = z.object({
 export interface LoginClientInputDTO {
     email: string;
     password: string;
-}
+};
 
 export interface LoginClientOutputDTO {
     message: string;
     token: string;
-}
+};
 
 export const LoginClientSchema = z.object({
     email: z.string({
@@ -59,3 +59,50 @@ export const LoginClientSchema = z.object({
         invalid_type_error: "'password' - deve ser enviado no formato string"
     })
 });
+
+//UPDATE
+
+export interface updateClient {
+    authorization: string;    
+    name?: string;
+    password?: string;
+    email?: string;
+    dateOfBirth?: string;
+};
+
+export interface updateClientOutputDTO {
+    message: string;
+};
+
+export const updateClientSchema = z.object({
+    authorization: z.string({
+        invalid_type_error: "'authorization' - deve ser enviado no formato string",
+        required_error: "'authorization' - é um campo obrigatorio e deve ser passado pelo header"
+    }).min(20),
+    name: z.string({
+        invalid_type_error: "'name' - deve ser enviado no formato string"
+    }).optional(),
+    password: z.string({
+        invalid_type_error: "'password' - deve ser enviado no formato string"
+    }).min(8).optional(),
+    email: z.string({
+        invalid_type_error: "'email' - deve ser enviado no formato string"
+    }).email().optional(),
+    dateOfBirth: z.string().optional()
+}).transform(data => data as updateClient);
+//DELETE CLIENT
+
+export interface deleteClientInputDTO {
+    authorization: string;
+};
+
+export interface deleteClientOutputDTO {
+    message: string;
+};
+
+export const deleteClientSchema = z.object({
+    authorization: z.string({
+        invalid_type_error: "'authorization' - deve ser enviado no formato string",
+        required_error: "'authorization' - é um campo obrigatorio e deve ser passado pelo header"
+    }).min(20)
+}).transform(data => data as deleteClientInputDTO);

@@ -13,3 +13,7 @@ const controller = new ClientController(new ClientBusiness(new ClientDB(), new T
 client.post("/signup", controller.Signup);
 
 client.post("/login", controller.Login);
+
+client.put("/update", controller.UpdateClient);
+
+client.delete("/delete", controller.DeleteClient);

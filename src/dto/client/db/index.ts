@@ -30,6 +30,7 @@ export interface Client {
     password: string;
     payment_card: Array<PaymentCardsDB>;
     address: Array<AddressDB>
+    date_of_birth: string | null | undefined;
 }
 
 // criar um usuario no banco
@@ -48,4 +49,16 @@ export interface Client_TableDB {
 
 export interface ClientLoginDB {
     email: string;
+}
+
+
+// atualiza um cliente
+
+export interface updateClientDB {
+    id: string;
+    name: string;
+    password: string;
+    email: string;
+    date_of_birth: string | null;
+    role: ROLE.COSTUMER;
 }

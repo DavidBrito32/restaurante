@@ -54,4 +54,6 @@ CREATE TABLE IF NOT EXISTS payment_cards (
 
 -- -----------------------------------------;
 
+select * from client;
+
 

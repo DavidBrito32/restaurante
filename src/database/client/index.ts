@@ -1,4 +1,4 @@
-import { ClientLoginDB, Client, Client_TableDB, AddressDB, PaymentCardsDB } from "../../dto/client/db";
+import { ClientLoginDB, Client, Client_TableDB, AddressDB, PaymentCardsDB, updateClientDB } from "../../dto/client/db";
 import { Db } from "../db";
 
 export class ClientDB extends Db {
@@ -15,7 +15,12 @@ export class ClientDB extends Db {
         await Db.connection(ClientDB.TABLE_CLIENT).where({email});
     };
 
-    public findClientById = async (id: string): Promise<Client> => {
+    public findClientById = async (id: string): Promise<Client_TableDB | undefined> => {
+        const [user]: Array<Client_TableDB> = await Db.connection(ClientDB.TABLE_CLIENT).select("*").where({id});
+       return user;
+    };
+
+    public findClientCompleteById = async (id: string): Promise<Client | undefined> => {
         const [user]: Array<Client_TableDB> = await Db.connection(ClientDB.TABLE_CLIENT).select("*").where({id});
         const address: Array<AddressDB> = await Db.connection(ClientDB.TABLE_CLIENT).select("*").where({id});
         const payment: Array<PaymentCardsDB> = await Db.connection(ClientDB.TABLE_CLIENT).select("*").where({id});
@@ -27,7 +32,8 @@ export class ClientDB extends Db {
             address: address,
             payment_card: payment,
             cpf: user.cpf,
-            password: user.password
+            password: user.password,
+            date_of_birth: user.date_of_birth
         };
     };
 
@@ -40,5 +46,13 @@ export class ClientDB extends Db {
         const [user]: Client_TableDB[] | undefined = await Db.connection(ClientDB.TABLE_CLIENT).where({cpf});
         return user;
     };
+
+    public updateClient = async (id: string, input: updateClientDB): Promise<void> => {
+        await Db.connection(ClientDB.TABLE_CLIENT).update(input).where({id});
+    }
+
+    public removeClient = async (id: string): Promise<void> => {
+        await Db.connection(ClientDB.TABLE_CLIENT).delete().where({id});
+    }
 
 }
