@@ -1,6 +1,10 @@
+import { AddresClient } from "../../../dto/client";
+import { InsertAdressClientDB, UpdateAdressClientDB } from "../../../dto/client/db";
+
 export class AddressModel {
     constructor(
         private id: string,
+        private clientId: string,
         private street: string,
         private houseNumber: number,
         private complement: string | null,
@@ -14,7 +18,15 @@ export class AddressModel {
     }
 
     public setId = (id: string): void => {
-        this.id = id
+        this.id = id;
+    }
+
+    public getClientId = (): string => {
+        return this.clientId;
+    }
+
+    public setClientId = (clientId: string): void => {
+        this.clientId = clientId;
     }
 
     public getStreet = (): string => {
@@ -26,7 +38,7 @@ export class AddressModel {
     }
 
     public getHouseNumber = (): number => {
-        return this.houseNumber
+        return this.houseNumber;
     }
 
     public setHouseNumber = (number: number): void => {
@@ -34,7 +46,7 @@ export class AddressModel {
     }
 
     public getComplement = (): string | null => {
-        return this.complement
+        return this.complement;
     }
 
     public setComplement = (complement: string | null): void => {
@@ -63,5 +75,43 @@ export class AddressModel {
 
     public setZipCode = (zipCode: string): void => {
         this.zipCode = zipCode;
+    }
+
+    public getAddress = (): AddresClient => {
+        return {
+            id: this.getId(),
+            street: this.getStreet(),
+            clientId: this.getClientId(),
+            houseNumber: this.getHouseNumber(),
+            complement: this.getComplement(),
+            district: this.getDistrict(),
+            city: this.getCity(),
+            zipCode: this.getZipCode()
+        }
+    }
+
+    public insertAdressDB = (): InsertAdressClientDB => {
+        return { 
+            id: this.getId(),
+            street: this.getStreet(),
+            house_number: this.getHouseNumber(),
+            client_id: this.getClientId(),
+            complement: this.getComplement(),
+            district: this.getDistrict(),
+            city: this.getCity(),
+            zip_code: this.getZipCode()
+        }
+    }
+    
+    public updateAdressDB = (): UpdateAdressClientDB => {
+        return { 
+            street: this.getStreet(),
+            house_number: this.getHouseNumber(),
+            client_id: this.getClientId(),
+            complement: this.getComplement(),
+            district: this.getDistrict(),
+            city: this.getCity(),
+            zip_code: this.getZipCode()
+        }
     }
 }

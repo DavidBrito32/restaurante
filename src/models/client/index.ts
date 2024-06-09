@@ -1,5 +1,4 @@
-import { updateClient } from "../../dto/client";
-import { Client_TableDB, updateClientDB } from "../../dto/client/db";
+import { Client_TableDB, GetClientOutPut, updateClientDB } from "../../dto/client/db";
 import { ROLE } from "../../services/tokenManager";
 
 export class ClientModel {
@@ -7,6 +6,7 @@ export class ClientModel {
         private id: string,
         private name: string,
         private email: string,
+        private avatar: string | null,
         private password: string,
         private cpf: string,
         private dateOfBirth: string | null | undefined
@@ -34,6 +34,14 @@ export class ClientModel {
 
     public setEmail = (email: string): void => {
         this.email = email;
+    }
+
+    private getAvatar = (): string | null => {
+        return this.avatar;
+    }
+
+    public setAvatar = (avatar: string | null): void => {
+        this.avatar = avatar;
     }
 
     private getPassword = (): string => {
@@ -64,6 +72,7 @@ export class ClientModel {
         return {
             id: this.getId(),
             name: this.getName(),
+            avatar: this.getAvatar(),
             email: this.getEmail(),
             password: this.getPassword(),
             cpf: this.getCpf(),
@@ -77,11 +86,21 @@ export class ClientModel {
             id: this.getId(),
             name: this.getName(),
             email: this.getEmail(),
+            avatar: this.getAvatar(),
             password: this.getPassword(),
             date_of_birth: this.getDateOfBirth() as string,
             role: ROLE.COSTUMER
         }
     }
 
-
+    public getClient = (): GetClientOutPut => {
+        return {
+            id: this.getId(),
+            name: this.getName(),
+            email: this.getEmail(),
+            avatar: this.getAvatar(),
+            date_of_birth: this.getDateOfBirth() as string,
+            role: ROLE.COSTUMER
+        }
+    }
 }

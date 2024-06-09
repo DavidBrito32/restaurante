@@ -17,3 +17,14 @@ client.post("/login", controller.Login);
 client.put("/update", controller.UpdateClient);
 
 client.delete("/delete", controller.DeleteClient);
+
+client.get("/profile", controller.GetClient);
+
+
+// ADRESS
+
+client.post("/adress", controller.CreateAdress);
+
+client.put("/adress/:id", controller.UpdateAdress);
+
+client.delete("/adress/:id", controller.DeleteAdress);

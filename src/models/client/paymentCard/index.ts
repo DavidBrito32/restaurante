@@ -1,3 +1,5 @@
+import { GetPaymentClient } from "../../../dto/client";
+
 export enum PAYMENTMETHOD {
     DEBIT = "DEBITO",
     CREDIT = "CREDITO"
@@ -8,6 +10,7 @@ export class PaymentModel {
         private id: string,
         private idClient: string,
         private numberCard: number,
+        private clientName: string,
         private method: PAYMENTMETHOD,
         private expiresIn: string,
         private cvv: number
@@ -37,6 +40,14 @@ export class PaymentModel {
         this.numberCard = number;
     }
 
+    public getClientName = (): string => {
+        return this.clientName;
+    }
+
+    public setClientName = (client: string): void => {
+        this.clientName = client;
+    }
+
     public getMethod = (): string => {
         return this.method;
     }
@@ -59,6 +70,15 @@ export class PaymentModel {
 
     public setCvv = (cvv: number): void => {
         this.cvv = cvv;
+    }
+
+    public getPayment = (): GetPaymentClient => {
+        return {
+            id: this.getId(),
+            idClient: this.getIdClient(),
+            numberCard: this.getNumberCard(),
+            clientName: this.getClientName()
+        }
     }
 
 }

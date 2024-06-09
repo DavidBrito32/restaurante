@@ -5,6 +5,8 @@ export interface PaymentCardsDB {
     id: string;
     id_client: string;
     numberCard: number;
+    clientName: string;
+    cvv: number;
     method: PAYMENTMETHOD;
     expiresIn: string;
 }
@@ -24,7 +26,8 @@ export interface AddressDB {
 //CAMADA DO BANCO DE DADOS
 export interface Client {
     id: string;
-    name: string
+    name: string;
+    avatar: string | null;
     email: string;
     cpf: string;
     password: string;
@@ -39,6 +42,7 @@ export interface Client_TableDB {
     id: string;
     name: string;
     password: string;
+    avatar: string | null;
     email: string;
     cpf: string;
     date_of_birth: string | null | undefined;
@@ -57,8 +61,56 @@ export interface ClientLoginDB {
 export interface updateClientDB {
     id: string;
     name: string;
+    avatar: string | null;
     password: string;
     email: string;
     date_of_birth: string | null;
     role: ROLE.COSTUMER;
+}
+
+
+// GET CLIENT
+export interface GetClientOutPut {
+    id: string;
+    name: string;
+    avatar: string | null;
+    email: string;
+    date_of_birth: string | null;
+    role: ROLE.COSTUMER;
+}
+
+
+// ADRESS
+
+export interface GetAllAdress {
+    id: string;
+    street: string;
+    house_number: number;
+    complement: string | null;
+    district: string;
+    city: string;
+    client_id: string;
+    zip_code: string;
+}
+
+
+export interface InsertAdressClientDB {
+    id: string;
+    street: string;
+    house_number: number;
+    complement: string | null;
+    district: string;
+    city: string;
+    client_id: string;
+    zip_code: string;
+}
+
+export interface UpdateAdressClientDB {
+    street: string;
+    house_number: number;
+    complement: string | null;
+    district: string;
+    city: string;
+    client_id: string;
+    zip_code: string;
 }

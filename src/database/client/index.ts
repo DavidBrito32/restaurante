@@ -1,4 +1,4 @@
-import { ClientLoginDB, Client, Client_TableDB, AddressDB, PaymentCardsDB, updateClientDB } from "../../dto/client/db";
+import { ClientLoginDB, Client, Client_TableDB, AddressDB, PaymentCardsDB, updateClientDB, InsertAdressClientDB, UpdateAdressClientDB, GetAllAdress } from "../../dto/client/db";
 import { Db } from "../db";
 
 export class ClientDB extends Db {
@@ -22,12 +22,13 @@ export class ClientDB extends Db {
 
     public findClientCompleteById = async (id: string): Promise<Client | undefined> => {
         const [user]: Array<Client_TableDB> = await Db.connection(ClientDB.TABLE_CLIENT).select("*").where({id});
-        const address: Array<AddressDB> = await Db.connection(ClientDB.TABLE_CLIENT).select("*").where({id});
-        const payment: Array<PaymentCardsDB> = await Db.connection(ClientDB.TABLE_CLIENT).select("*").where({id});
+        const address: Array<AddressDB> = await Db.connection(ClientDB.TABLE_ADDRESS).select("*").where({client_id: id});
+        const payment: Array<PaymentCardsDB> = await Db.connection(ClientDB.TABLE_PAYMENT).select("*").where({id});
 
         return {
             id: user.id,
             name: user.name,
+            avatar: user.avatar,
             email: user.email,
             address: address,
             payment_card: payment,
@@ -49,10 +50,42 @@ export class ClientDB extends Db {
 
     public updateClient = async (id: string, input: updateClientDB): Promise<void> => {
         await Db.connection(ClientDB.TABLE_CLIENT).update(input).where({id});
-    }
+    };
 
     public removeClient = async (id: string): Promise<void> => {
         await Db.connection(ClientDB.TABLE_CLIENT).delete().where({id});
+    };
+
+    // ADRESS
+
+    public listAdress = async (client_id: string): Promise<Array<GetAllAdress>> => {
+        const address: Array<GetAllAdress> = await Db.connection(ClientDB.TABLE_ADDRESS).where({
+            client_id
+        });
+        
+        return address;
+    }
+
+    public findAdressById = async (id: string): Promise<Array<GetAllAdress | undefined>> => {
+        const adress: Array<GetAllAdress | undefined > = await Db.connection(ClientDB.TABLE_ADDRESS).select("*").where({id});
+        return adress;
+    }
+
+    public findAdressByStreet = async (street: string): Promise<Array<GetAllAdress | undefined>> => {
+        const adress: Array<GetAllAdress | undefined > = await Db.connection(ClientDB.TABLE_ADDRESS).select("*").where("street", "like", `%${street}%`);
+        return adress;
+    }
+
+    public insertAdress = async (input: InsertAdressClientDB): Promise<void> => {
+        await Db.connection(ClientDB.TABLE_ADDRESS).insert(input);
+    }
+
+    public updateAdress = async (id: string ,input: UpdateAdressClientDB): Promise<void> => {
+        await Db.connection(ClientDB.TABLE_ADDRESS).update(input).where({id});
+    }
+
+    public removeAdress = async (id: string): Promise<void> => {
+        await Db.connection(ClientDB.TABLE_ADDRESS).delete().where({id});
     }
 
 }

@@ -17,6 +17,7 @@ CREATE TABLE IF NOT EXISTS users(
 -- TABELA DE CLIENTES
 CREATE TABLE IF NOT EXISTS client(
     id TEXT NOT NULL UNIQUE PRIMARY KEY,
+    avatar TEXT,
     name TEXT NOT NULL,
     email TEXT NOT NULL UNIQUE,
     password TEXT NOT NULL,
@@ -24,6 +25,8 @@ CREATE TABLE IF NOT EXISTS client(
     date_of_birth DATE NULL,
     role TEXT NOT NULL
 );
+
+
 
 
 
@@ -45,12 +48,17 @@ CREATE TABLE IF NOT EXISTS payment_cards (
     id TEXT NOT NULL UNIQUE PRIMARY KEY,
     client_id TEXT NOT NULL UNIQUE,
     number_card INTEGER NOT NULL UNIQUE,
+    client_name TEXT NOT NULL,
     method TEXT NOT NULL,
     expires_in TEXT NOT NULL,
-    cvv TEXT NOT NULL,
+    cvv INTEGER NOT NULL,
     FOREIGN KEY (client_id) REFERENCES client(id) 
     ON UPDATE CASCADE ON DELETE CASCADE
 );
+
+
+
+
 
 -- -----------------------------------------;
 
