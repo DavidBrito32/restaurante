@@ -149,6 +149,8 @@ export interface AddresClient {
     complement: string | null;
     district: string;
     city: string;
+    state: string;
+    primaryAdress: boolean;
     zipCode: string;
 };
 
@@ -189,6 +191,7 @@ export interface InsertAdressClientInputDTO {
     complement?: string | null;
     district: string;
     city: string;
+    state: string;
     zipCode: string;
 }
 
@@ -203,26 +206,30 @@ export const InsertAdressClientSchema = z.object({
     }).min(20),
     street: z.string({
         invalid_type_error: "'street' - deve ser enviado no formato string",
-        required_error: "'street' - é um campo obrigatorio e deve ser passado pelo header"
+        required_error: "'street' - é um campo obrigatorio"
     }),
     houseNumber: z.number({
         invalid_type_error: "'houseNumber' - deve ser enviado no formato string",
-        required_error: "'houseNumber' - é um campo obrigatorio e deve ser passado pelo header"
+        required_error: "'houseNumber' - é um campo obrigatorio"
     }).min(1),
     complement: z.string({
         invalid_type_error: "'complement' - deve ser enviado no formato string"
     }).optional().nullable(),
     district: z.string({
         invalid_type_error: "'district' - deve ser enviado no formato string",
-        required_error: "'district' - é um campo obrigatorio e deve ser passado pelo header"
+        required_error: "'district' - é um campo obrigatorio"
     }),
     city: z.string({
         invalid_type_error: "'city' - deve ser enviado no formato string",
-        required_error: "'city' - é um campo obrigatorio e deve ser passado pelo header"
+        required_error: "'city' - é um campo obrigatorio"
     }),
+    state: z.string({
+        invalid_type_error: "'state' - deve ser enviado no formato string",
+        required_error: "'state' - é um campo obrigatorio"
+    }).min(2).max(2),
     zipCode: z.string({
         invalid_type_error: "'zipCode' - deve ser enviado no formato string",
-        required_error: "'zipCode' - é um campo obrigatorio e deve ser passado pelo header"
+        required_error: "'zipCode' - é um campo obrigatorio"
     })    
 }).transform(data => data as InsertAdressClientInputDTO);
 
@@ -237,6 +244,8 @@ export interface UpdateAdressClientInputDTO {
     complement?: string | null;
     district?: string;
     city?: string;
+    primaryAdress: boolean;
+    state?: string;
     zipCode?: string;
 };
 
@@ -266,6 +275,12 @@ export const UpdateAdressClientSchema = z.object({
     }).optional(),
     city: z.string({
         invalid_type_error: "'city' - deve ser enviado no formato string",
+    }).optional(),
+    state: z.string({
+        invalid_type_error: "'state' - deve ser enviado no formato string",
+    }).min(2).max(2).optional(),
+    primaryAdress: z.boolean({
+        invalid_type_error: "'primaryAdress' - deve ser enviado no formato booleano",
     }).optional(),
     zipCode: z.string({
         invalid_type_error: "'zipCode' - deve ser enviado no formato string",

@@ -18,7 +18,9 @@ export interface AddressDB {
     house_number: number;
     complement: string | null;
     district: string;
+    primary_adress: boolean;
     city: string;
+    state: string;
     zip_code: string;
 }   
 
@@ -89,6 +91,8 @@ export interface GetAllAdress {
     complement: string | null;
     district: string;
     city: string;
+    state: string;
+    primary_adress: boolean;
     client_id: string;
     zip_code: string;
 }
@@ -101,7 +105,9 @@ export interface InsertAdressClientDB {
     complement: string | null;
     district: string;
     city: string;
+    state: string;
     client_id: string;
+    primary_adress: boolean;
     zip_code: string;
 }
 
@@ -111,6 +117,8 @@ export interface UpdateAdressClientDB {
     complement: string | null;
     district: string;
     city: string;
+    state: string;
+    primary_adress: boolean;
     client_id: string;
     zip_code: string;
 }

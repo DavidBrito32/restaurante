@@ -37,11 +37,18 @@ CREATE TABLE IF NOT EXISTS address(
     house_number INTEGER NOT NULL,
     district TEXT NOT NULL,
     city TEXT NOT NULL,
+    state TEXT NOT NULL,
     complement TEXT NULL,
     zip_code TEXT NOT NULL,
+    primary_adress BOOLEAN NOT NULL DEFAULT TRUE,
     client_id TEXT NOT NULL,
     FOREIGN KEY (client_id) REFERENCES client(id) ON UPDATE CASCADE ON DELETE CASCADE
 );
+
+
+
+
+
 
 -- TABELA DE CARTÃO DE CREDITO DE CLIENTES
 CREATE TABLE IF NOT EXISTS payment_cards (

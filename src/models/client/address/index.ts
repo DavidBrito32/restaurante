@@ -10,6 +10,8 @@ export class AddressModel {
         private complement: string | null,
         private district: string,
         private city: string,
+        private state: string,
+        private primaryAdress: boolean,
         private zipCode: string
     ){}
 
@@ -69,6 +71,22 @@ export class AddressModel {
         this.city = city;
     }
 
+    public getState = (): string => {
+        return this.state;
+    }
+
+    public setState = (state: string): void => {
+        this.state = state;
+    }
+
+    public getPrimaryAdress = (): boolean => {
+        return this.primaryAdress;
+    }
+
+    public setPrimaryAdress = (primaryAdress: boolean): void => {
+        this.primaryAdress = primaryAdress;
+    }
+
     public getZipCode = (): string => {
         return this.zipCode;
     }
@@ -86,6 +104,8 @@ export class AddressModel {
             complement: this.getComplement(),
             district: this.getDistrict(),
             city: this.getCity(),
+            state: this.getState(),
+            primaryAdress: this.getPrimaryAdress(),
             zipCode: this.getZipCode()
         }
     }
@@ -99,6 +119,8 @@ export class AddressModel {
             complement: this.getComplement(),
             district: this.getDistrict(),
             city: this.getCity(),
+            state: this.getState(),
+            primary_adress: this.getPrimaryAdress(),
             zip_code: this.getZipCode()
         }
     }
@@ -111,6 +133,8 @@ export class AddressModel {
             complement: this.getComplement(),
             district: this.getDistrict(),
             city: this.getCity(),
+            state: this.getState(),
+            primary_adress: this.getPrimaryAdress(),
             zip_code: this.getZipCode()
         }
     }

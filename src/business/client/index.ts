@@ -82,7 +82,7 @@ export class ClientBusiness {
 
         const client = new ClientModel(exists.id, exists.name, exists.email, exists.avatar, exists.password, exists.cpf, exists.date_of_birth).getClient();
 
-        const address: Array<AddresClient> = exists.address.map((endereco) => new AddressModel(endereco.id, endereco.client_id, endereco.street, endereco.house_number, endereco.complement, endereco.district, endereco.city, endereco.zip_code).getAddress());
+        const address: Array<AddresClient> = exists.address.map((endereco) => new AddressModel(endereco.id, endereco.client_id, endereco.street, endereco.house_number, endereco.complement, endereco.district, endereco.city, endereco.state, endereco.primary_adress, endereco.zip_code).getAddress());
 
         const payment: Array<GetPaymentClient> = exists.payment_card.map((payment) => new PaymentModel(payment.id, payment.id_client, payment.numberCard, payment.clientName, payment.method, payment.expiresIn, payment.cvv).getPayment());
 
@@ -155,49 +155,50 @@ export class ClientBusiness {
     };
 
     //ADDRESS
+
     public createAdress = async (input: InsertAdressClientInputDTO): Promise<InsertAdressClientOutputDTO> => {
-        const { authorization, street, houseNumber, district, complement, city, zipCode } = input;
+        const { authorization, street, houseNumber, district, complement, city, state, zipCode } = input;
         const payload = this.tokenManager.getPayload(authorization.split(" ")[1]);
         if (payload === null) {
             throw new Unouthorized();
         }
 
         const [adressAlReadyExists] = await this.clientDb.findAdressByStreet(street);
-        if(adressAlReadyExists){
+        if (adressAlReadyExists) {
             throw new BadRequest("'adress' - endereço ja registrado");
         }
 
         const id = this.idManager.generate();
         const complemento: string | null = complement === undefined ? null : complement;
 
-        const Adress = new AddressModel(id, payload.id, street, houseNumber, complemento, district, city, zipCode).insertAdressDB();
-        
+        const Adress = new AddressModel(id, payload.id, street, houseNumber, complemento, district, city, state, false, zipCode).insertAdressDB();
+
         await this.clientDb.insertAdress(Adress);
 
-        return { 
+        return {
             message: "Endereço Adicionado com sucesso!!"
         }
 
     }
 
     public updateAdress = async (input: UpdateAdressClientInputDTO): Promise<UpdateAdressClientOutputDTO> => {
-        const { authorization, id, street, complement, houseNumber, city, district, zipCode } = input;
+        const { authorization, id, street, complement, houseNumber, city, district, zipCode, state, primaryAdress } = input;
         const payload = this.tokenManager.getPayload(authorization.split(" ")[1]);
         if (payload === null) {
             throw new Unouthorized();
         }
 
-        if(!street && !complement && !houseNumber && !city && !district && !zipCode){
+        if (!street && !complement && !houseNumber && !city && !district && !zipCode && !primaryAdress) {
             throw new BadRequest("'Atenção' - Informar ao menos um dado para atualização")
         }
 
         const [adressAlReadyExists] = await this.clientDb.findAdressById(id);
 
-        if(!adressAlReadyExists){
+        if (!adressAlReadyExists) {
             throw new BadRequest("'adress' - endereço não existe");
         }
 
-        const ADRESS = new AddressModel(adressAlReadyExists.id, adressAlReadyExists.client_id, street || adressAlReadyExists.street, houseNumber || adressAlReadyExists.house_number, complement || adressAlReadyExists.complement, district || adressAlReadyExists.district, city || adressAlReadyExists.city, zipCode || adressAlReadyExists.zip_code).updateAdressDB();
+        const ADRESS = new AddressModel(adressAlReadyExists.id, adressAlReadyExists.client_id, street || adressAlReadyExists.street, houseNumber || adressAlReadyExists.house_number, complement || adressAlReadyExists.complement, district || adressAlReadyExists.district, city || adressAlReadyExists.city, state || adressAlReadyExists.state, primaryAdress || adressAlReadyExists.primary_adress, zipCode || adressAlReadyExists.zip_code).updateAdressDB();
 
         await this.clientDb.updateAdress(id, ADRESS);
 
@@ -214,7 +215,7 @@ export class ClientBusiness {
         }
 
         const [Adress] = await this.clientDb.findAdressById(id);
-        if(!Adress){
+        if (!Adress) {
             throw new NotFound();
         }
 
@@ -224,5 +225,9 @@ export class ClientBusiness {
             message: "Endereço removido com sucesso!"
         }
     }
+
+    //CREDIT CARD
+
+
 
 }
