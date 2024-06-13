@@ -2,7 +2,7 @@ import { ZodError } from "zod";
 import { ClientBusiness } from "../../business/client";
 import { Request, Response } from "express";
 import { BaseError } from "../../errors/BaseError";
-import { DeleteAdressClientSchema, FindClientSchema, InsertAdressClientSchema, LoginClientSchema, SignupClientInputDTO, SignupClientOutputDTO, SignupClientSchema, UpdateAdressClientSchema, deleteClientSchema, updateClientSchema } from "../../dto/client";
+import { DeleteAdressClientSchema, FindClientSchema, InsertAdressClientSchema, InsertPaymentSchema, LoginClientSchema, SignupClientInputDTO, SignupClientOutputDTO, SignupClientSchema, UpdateAdressClientSchema, deleteClientSchema, updateClientSchema } from "../../dto/client";
 
 export class ClientController {
     constructor(
@@ -20,7 +20,7 @@ export class ClientController {
             } else if (err instanceof BaseError) {
                 res.status(err.statusCode).send(err.message);
             } else {
-                res.send(500).json({
+                res.status(500).json({
                     message: "Erro não tratado",
                     descricao: err
                 });
@@ -39,7 +39,7 @@ export class ClientController {
             } else if (err instanceof BaseError) {
                 res.status(err.statusCode).send(err.message);
             } else {
-                res.send(500).json({
+                res.status(500).json({
                     message: "Erro não tratado",
                     descricao: err
                 });
@@ -62,7 +62,7 @@ export class ClientController {
             } else if (err instanceof BaseError) {
                 res.status(err.statusCode).send(err.message);
             } else {
-                res.send(500).json({
+                res.status(500).json({
                     message: "Erro não tratado",
                     descricao: err
                 });
@@ -81,7 +81,7 @@ export class ClientController {
             } else if (err instanceof BaseError) {
                 res.status(err.statusCode).send(err.message)
             } else {
-                res.send(500).json({
+                res.status(500).json({
                     message: "Erro não tratado",
                     descricao: err
                 });
@@ -100,7 +100,7 @@ export class ClientController {
             } else if (err instanceof BaseError) {
                 res.status(err.statusCode).send(err.message);
             } else {
-                res.send(500).json({
+                res.status(500).json({
                     message: "Erro não tratado",
                     descricao: err
                 });
@@ -126,7 +126,7 @@ export class ClientController {
             } else if (err instanceof BaseError) {
                 res.status(err.statusCode).send(err.message);
             } else {
-                res.send(500).json({
+                res.status(500).json({
                     message: "Erro não tratado",
                     descricao: err
                 });
@@ -150,7 +150,7 @@ export class ClientController {
             } else if (err instanceof BaseError) {
                 res.status(err.statusCode).send(err.message);
             } else {
-                res.send(500).json({
+                res.status(500).json({
                     message: "Erro não tratado",
                     descricao: err
                 });
@@ -173,7 +173,33 @@ export class ClientController {
             } else if (err instanceof BaseError) {
                 res.status(err.statusCode).send(err.message);
             } else {
-                res.send(500).json({
+                res.status(500).json({
+                    message: "Erro não tratado",
+                    descricao: err
+                });
+            }
+        }
+    }
+
+    // PAYMENT
+
+    public CreatePayment = async (req: Request, res: Response): Promise<void> => {
+        try{
+            const input = InsertPaymentSchema.parse({
+                authorization: req.headers.authorization,
+                ...req.body
+            });
+
+            const output = await this.clientBusiness.createPaymentCard(input);
+
+            res.status(201).send(output);
+        }catch (err) {
+            if (err instanceof ZodError) {
+                res.status(400).send(err.issues);
+            } else if (err instanceof BaseError) {
+                res.status(err.statusCode).send(err.message);
+            } else {
+                res.status(500).json({
                     message: "Erro não tratado",
                     descricao: err
                 });

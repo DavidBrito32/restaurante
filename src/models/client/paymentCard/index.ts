@@ -1,4 +1,5 @@
 import { GetPaymentClient } from "../../../dto/client";
+import { InsertPaymentDB, PaymentCardsDB } from "../../../dto/client/db";
 
 export enum PAYMENTMETHOD {
     DEBIT = "DEBITO",
@@ -13,6 +14,7 @@ export class PaymentModel {
         private clientName: string,
         private method: PAYMENTMETHOD,
         private expiresIn: string,
+        private createdAt: string,
         private cvv: number
     ){}
 
@@ -48,7 +50,7 @@ export class PaymentModel {
         this.clientName = client;
     }
 
-    public getMethod = (): string => {
+    public getMethod = (): PAYMENTMETHOD => {
         return this.method;
     }
 
@@ -62,6 +64,14 @@ export class PaymentModel {
 
     public setExpiresIn = (expiresIn: PAYMENTMETHOD): void => {
         this.expiresIn = expiresIn;
+    }
+
+    public getCreatedAt = (): string => {
+        return this.createdAt;
+    }
+
+    public setCreatedAt = (createdAt: PAYMENTMETHOD): void => {
+        this.createdAt = createdAt;
     }
 
     public getCvv = (): number => {
@@ -78,6 +88,20 @@ export class PaymentModel {
             idClient: this.getIdClient(),
             numberCard: this.getNumberCard(),
             clientName: this.getClientName()
+        }
+    }
+
+    public insertPaymentDB = (): InsertPaymentDB => {
+        
+        return {
+            id: this.getId(),
+            client_id: this.getIdClient(),
+            number_Card: this.getNumberCard(),
+            client_name: this.getClientName(),
+            method: this.getMethod(),
+            expires_in: this.getExpiresIn(),
+            cvv: this.getCvv(),
+            created_at: this.getCreatedAt(),
         }
     }
 

@@ -59,6 +59,7 @@ CREATE TABLE IF NOT EXISTS payment_cards (
     method TEXT NOT NULL,
     expires_in TEXT NOT NULL,
     cvv INTEGER NOT NULL,
+    created_at TEXT NOT NULL,
     FOREIGN KEY (client_id) REFERENCES client(id) 
     ON UPDATE CASCADE ON DELETE CASCADE
 );
@@ -66,9 +67,8 @@ CREATE TABLE IF NOT EXISTS payment_cards (
 
 
 
-
 -- -----------------------------------------;
 
-select * from client;
+select * from payment_cards;
 
 

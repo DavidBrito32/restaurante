@@ -28,3 +28,8 @@ client.post("/adress", controller.CreateAdress);
 client.put("/adress/:id", controller.UpdateAdress);
 
 client.delete("/adress/:id", controller.DeleteAdress);
+
+
+//  PAYMENT
+
+client.post("/payment", controller.CreatePayment);

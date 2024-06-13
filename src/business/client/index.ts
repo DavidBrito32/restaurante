@@ -1,5 +1,5 @@
 import { ClientDB } from "../../database/client";
-import { AddresClient, DeleteAdressClientInputDTO, DeleteAdressClientOutputDTO, FindClientInputDTO, FindClientOutputDTO, GetClientOutPutDTO, GetPaymentClient, InsertAdressClientInputDTO, InsertAdressClientOutputDTO, LoginClientInputDTO, LoginClientOutputDTO, SignupClientInputDTO, SignupClientOutputDTO, UpdateAdressClientInputDTO, UpdateAdressClientOutputDTO, deleteClientInputDTO, deleteClientOutputDTO, updateClient, updateClientOutputDTO } from "../../dto/client";
+import { AddresClient, DeleteAdressClientInputDTO, DeleteAdressClientOutputDTO, FindClientInputDTO, FindClientOutputDTO, GetClientOutPutDTO, GetPaymentClient, InsertAdressClientInputDTO, InsertAdressClientOutputDTO, InsertPaymentInputDTO, InsertPaymentOutputDTO, LoginClientInputDTO, LoginClientOutputDTO, SignupClientInputDTO, SignupClientOutputDTO, UpdateAdressClientInputDTO, UpdateAdressClientOutputDTO, deleteClientInputDTO, deleteClientOutputDTO, updateClient, updateClientOutputDTO } from "../../dto/client";
 import { BadRequest } from "../../errors/BadRequest";
 import { NotFound } from "../../errors/NotFound";
 import { Unouthorized } from "../../errors/Unouthorized";
@@ -84,7 +84,7 @@ export class ClientBusiness {
 
         const address: Array<AddresClient> = exists.address.map((endereco) => new AddressModel(endereco.id, endereco.client_id, endereco.street, endereco.house_number, endereco.complement, endereco.district, endereco.city, endereco.state, endereco.primary_adress, endereco.zip_code).getAddress());
 
-        const payment: Array<GetPaymentClient> = exists.payment_card.map((payment) => new PaymentModel(payment.id, payment.id_client, payment.numberCard, payment.clientName, payment.method, payment.expiresIn, payment.cvv).getPayment());
+        const payment: Array<GetPaymentClient> = exists.payment_card.map((payment) => new PaymentModel(payment.id, payment.client_id, payment.number_card, payment.client_name, payment.method, payment.expires_in,payment.created_at, payment.cvv).getPayment());
 
         const output: GetClientOutPutDTO = {
             id: client.id,
@@ -228,6 +228,39 @@ export class ClientBusiness {
 
     //CREDIT CARD
 
+    public createPaymentCard = async (input: InsertPaymentInputDTO): Promise<InsertPaymentOutputDTO> => {
+        const { authorization, clientName, cvv, expiresIn, method, numberCard } = input;
+        const payload = this.tokenManager.getPayload(authorization.split(" ")[1]);
+        if (payload === null) {
+            throw new Unouthorized();
+        }
+
+        const exists = await this.clientDb.findClientCompleteById(payload.id);
+
+        if (!exists) {
+            throw new NotFound("'client' - cliente não encontrado");
+        }
+
+        const cardAllReadyExistis = await this.clientDb.findPaymentMethodByNumberCard(numberCard);        
+
+        if(cardAllReadyExistis){
+            throw new BadRequest();
+        }
+
+        const ID = this.idManager.generate();
+        const createdAt = new Date().toISOString();
+
+        const payment = new PaymentModel(ID, payload.id, numberCard, clientName, method, expiresIn, createdAt, cvv);
+
+        await this.clientDb.insertPaymentCard(payment.insertPaymentDB());
+        
+
+        return {
+            message: "Cartão Adicionado com sucesso !"
+        }
+
+
+    }
 
 
 }

@@ -165,14 +165,6 @@ export interface FindClientOutputDTO {
     savedPaymentMethods: Array<SavedPaymentMethods>
 };
 
-
-export interface GetPaymentClient {
-    id: string;
-    idClient: string;
-    numberCard: number;
-    clientName: string;
-}
-
 export interface GetClientOutPutDTO {
     id: string;
     name: string;
@@ -308,3 +300,63 @@ export const DeleteAdressClientSchema = z.object({
         required_error: "'id' - é um campo obrigatorio",
     }),
 }).transform(data => data as DeleteAdressClientInputDTO);
+
+
+
+// PAYMENT METHODS
+
+export interface GetPaymentClient {
+    id: string;
+    idClient: string;
+    numberCard: number;
+    clientName: string;
+}
+
+
+export interface GetPaymentClientDB {
+    id: string;
+    client_id: string;
+    number_card: number;
+    client_name: string;
+    method: PAYMENTMETHOD;
+    expiresIn: string;
+    cvv: number;
+    created_at: string;
+}
+
+export interface InsertPaymentInputDTO {
+    authorization: string;
+    numberCard: number;
+    clientName: string;
+    method: PAYMENTMETHOD;
+    expiresIn: string;
+    cvv: number;
+}
+
+export interface InsertPaymentOutputDTO {
+    message: string;
+}
+
+export const InsertPaymentSchema = z.object({
+    authorization: z.string({
+        invalid_type_error: "'authorization' - deve ser enviado no formato string",
+        required_error: "'authorization' - é um campo obrigatorio e deve ser passado pelo header"
+    }).min(20),
+    numberCard: z.number({
+        invalid_type_error: "'numberCard' - deve ser enviado no formato Number",
+        required_error: "'numberCard' - é um dado obrigatorio"
+    }).min(16),
+    clientName: z.string({
+        invalid_type_error: "'clientName' - deve ser enviado no formato string",
+        required_error: "'clientName' - é um dado obrigatorio"
+    }).min(2),
+    method: z.enum([PAYMENTMETHOD.CREDIT, PAYMENTMETHOD.DEBIT]),
+    expiresIn: z.string({
+        invalid_type_error: "'expiresIn' - deve ser enviado no formato string",
+        required_error: "'expiresIn' - é um dado obrigatorio"
+    }).min(7).max(7),
+    cvv: z.number({
+        invalid_type_error: "'cvv' - deve ser enviado no formato Number",
+        required_error: "'cvv' - é um dado obrigatorio"
+    }).min(3)
+}).transform(data => data as InsertPaymentInputDTO);

@@ -1,15 +1,7 @@
 import { PAYMENTMETHOD } from "../../../models/client/paymentCard";
 import { ROLE } from "../../../services/tokenManager";
 
-export interface PaymentCardsDB {
-    id: string;
-    id_client: string;
-    numberCard: number;
-    clientName: string;
-    cvv: number;
-    method: PAYMENTMETHOD;
-    expiresIn: string;
-}
+
 
 export interface AddressDB {
     id: string;
@@ -121,4 +113,27 @@ export interface UpdateAdressClientDB {
     primary_adress: boolean;
     client_id: string;
     zip_code: string;
+}
+
+// PAYMENT CARD
+export interface PaymentCardsDB {
+    id: string;
+    client_id: string;
+    number_card: number;
+    client_name: string;
+    cvv: number;
+    method: PAYMENTMETHOD;
+    expires_in: string;
+    created_at: string;
+}
+
+export interface InsertPaymentDB {
+    id: string;
+    client_id: string;
+    number_Card: number;
+    client_name: string;
+    method: PAYMENTMETHOD;
+    expires_in: string;
+    cvv: number;
+    created_at: string;
 }

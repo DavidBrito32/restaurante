@@ -1,10 +1,11 @@
-import { ClientLoginDB, Client, Client_TableDB, AddressDB, PaymentCardsDB, updateClientDB, InsertAdressClientDB, UpdateAdressClientDB, GetAllAdress } from "../../dto/client/db";
+import { GetPaymentClientDB } from "../../dto/client";
+import { ClientLoginDB, Client, Client_TableDB, AddressDB, PaymentCardsDB, updateClientDB, InsertAdressClientDB, UpdateAdressClientDB, GetAllAdress, InsertPaymentDB } from "../../dto/client/db";
 import { Db } from "../db";
 
 export class ClientDB extends Db {
     public static TABLE_CLIENT: string = "client";
     public static TABLE_ADDRESS: string = "address";
-    public static TABLE_PAYMENT: string = "address";
+    public static TABLE_PAYMENT: string = "payment_cards";
 
     public insertClient = async (input: Client_TableDB): Promise<void> => {
         await Db.connection(ClientDB.TABLE_CLIENT).insert(input);
@@ -23,7 +24,7 @@ export class ClientDB extends Db {
     public findClientCompleteById = async (id: string): Promise<Client | undefined> => {
         const [user]: Array<Client_TableDB> = await Db.connection(ClientDB.TABLE_CLIENT).select("*").where({id});
         const address: Array<AddressDB> = await Db.connection(ClientDB.TABLE_ADDRESS).select("*").where({client_id: id});
-        const payment: Array<PaymentCardsDB> = await Db.connection(ClientDB.TABLE_PAYMENT).select("*").where({id});
+        const payment: Array<PaymentCardsDB> = await Db.connection(ClientDB.TABLE_PAYMENT).select("*").where({client_id: id});
 
         return {
             id: user.id,
@@ -57,7 +58,6 @@ export class ClientDB extends Db {
     };
 
     // ADRESS
-
     public listAdress = async (client_id: string): Promise<Array<GetAllAdress>> => {
         const address: Array<GetAllAdress> = await Db.connection(ClientDB.TABLE_ADDRESS).where({
             client_id
@@ -86,6 +86,18 @@ export class ClientDB extends Db {
 
     public removeAdress = async (id: string): Promise<void> => {
         await Db.connection(ClientDB.TABLE_ADDRESS).delete().where({id});
+    }
+
+    // PAYMENT METHODS
+
+    public findPaymentMethodByNumberCard = async (number_card: number): Promise<GetPaymentClientDB | undefined> => {
+        const [paymentByNumberCard]: Array<GetPaymentClientDB> = await Db.connection(ClientDB.TABLE_PAYMENT).select().where({number_card});
+
+        return paymentByNumberCard;
+    }
+
+    public insertPaymentCard = async (input: InsertPaymentDB): Promise<void> => {
+        await Db.connection(ClientDB.TABLE_PAYMENT).insert(input);;
     }
 
 }
