@@ -33,3 +33,5 @@ client.delete("/adress/:id", controller.DeleteAdress);
 //  PAYMENT
 
 client.post("/payment", controller.CreatePayment);
+
+client.delete("/payment/:id", controller.DeletePayment);

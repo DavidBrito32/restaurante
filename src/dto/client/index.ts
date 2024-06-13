@@ -319,7 +319,7 @@ export interface GetPaymentClientDB {
     number_card: number;
     client_name: string;
     method: PAYMENTMETHOD;
-    expiresIn: string;
+    expires_in: string;
     cvv: number;
     created_at: string;
 }
@@ -360,3 +360,25 @@ export const InsertPaymentSchema = z.object({
         required_error: "'cvv' - é um dado obrigatorio"
     }).min(3)
 }).transform(data => data as InsertPaymentInputDTO);
+
+//UPDATE PAYMENT
+
+export interface DeletePaymentInputDTO {
+    authorization: string;
+    id: string;
+}
+
+export interface DeletePaymentOutputDTO {
+    message: string;
+}
+
+export const DeletePaymentSchema = z.object({
+    authorization: z.string({
+        invalid_type_error: "'authorization' - deve ser enviado no formato string",
+        required_error: "'authorization' - é um campo obrigatorio e deve ser passado pelo header"
+    }).min(20),
+    id: z.string({
+        invalid_type_error: "'id' - deve ser enviado no formato string",
+        required_error: "'id' - é um campo obrigatorio e deve ser passado pelo header"
+    }).min(20)
+}).transform(data => data as DeletePaymentInputDTO);

@@ -2,7 +2,7 @@ import { ZodError } from "zod";
 import { ClientBusiness } from "../../business/client";
 import { Request, Response } from "express";
 import { BaseError } from "../../errors/BaseError";
-import { DeleteAdressClientSchema, FindClientSchema, InsertAdressClientSchema, InsertPaymentSchema, LoginClientSchema, SignupClientInputDTO, SignupClientOutputDTO, SignupClientSchema, UpdateAdressClientSchema, deleteClientSchema, updateClientSchema } from "../../dto/client";
+import { DeleteAdressClientSchema, DeletePaymentSchema, FindClientSchema, InsertAdressClientSchema, InsertPaymentSchema, LoginClientSchema, SignupClientInputDTO, SignupClientOutputDTO, SignupClientSchema, UpdateAdressClientSchema, deleteClientSchema, updateClientSchema } from "../../dto/client";
 
 export class ClientController {
     constructor(
@@ -111,7 +111,7 @@ export class ClientController {
     // ADRESS
 
     public CreateAdress = async (req: Request, res: Response): Promise<void> => {
-        try{
+        try {
             const input = InsertAdressClientSchema.parse({
                 authorization: req.headers.authorization,
                 ...req.body
@@ -135,7 +135,7 @@ export class ClientController {
     }
 
     public UpdateAdress = async (req: Request, res: Response): Promise<void> => {
-        try{
+        try {
             const input = UpdateAdressClientSchema.parse({
                 authorization: req.headers.authorization,
                 id: req.params.id,
@@ -144,7 +144,7 @@ export class ClientController {
 
             const output = await this.clientBusiness.updateAdress(input);
             res.status(200).send(output);
-        }catch (err) {
+        } catch (err) {
             if (err instanceof ZodError) {
                 res.status(400).send(err.issues);
             } else if (err instanceof BaseError) {
@@ -159,7 +159,7 @@ export class ClientController {
     }
 
     public DeleteAdress = async (req: Request, res: Response): Promise<void> => {
-        try{
+        try {
             const input = DeleteAdressClientSchema.parse({
                 authorization: req.headers.authorization,
                 id: req.params.id,
@@ -167,7 +167,7 @@ export class ClientController {
 
             const output = await this.clientBusiness.deleteAdress(input);
             res.status(200).send(output);
-        }catch (err) {
+        } catch (err) {
             if (err instanceof ZodError) {
                 res.status(400).send(err.issues);
             } else if (err instanceof BaseError) {
@@ -184,7 +184,7 @@ export class ClientController {
     // PAYMENT
 
     public CreatePayment = async (req: Request, res: Response): Promise<void> => {
-        try{
+        try {
             const input = InsertPaymentSchema.parse({
                 authorization: req.headers.authorization,
                 ...req.body
@@ -193,7 +193,31 @@ export class ClientController {
             const output = await this.clientBusiness.createPaymentCard(input);
 
             res.status(201).send(output);
-        }catch (err) {
+        } catch (err) {
+            if (err instanceof ZodError) {
+                res.status(400).send(err.issues);
+            } else if (err instanceof BaseError) {
+                res.status(err.statusCode).send(err.message);
+            } else {
+                res.status(500).json({
+                    message: "Erro não tratado",
+                    descricao: err
+                });
+            }
+        }
+    }
+
+    public DeletePayment = async (req: Request, res: Response): Promise<void> => {
+        try {
+            const input = DeletePaymentSchema.parse({
+                authorization: req.headers.authorization,
+                id: req.params.id
+            });
+
+            const output = await this.clientBusiness.deletePaymentCard(input);
+
+            res.status(200).send(output);
+        } catch (err) {
             if (err instanceof ZodError) {
                 res.status(400).send(err.issues);
             } else if (err instanceof BaseError) {

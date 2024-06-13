@@ -96,8 +96,18 @@ export class ClientDB extends Db {
         return paymentByNumberCard;
     }
 
+    public findPaymentMethodById = async (id: string): Promise<GetPaymentClientDB | undefined> => {
+        const [paymentById]: Array<GetPaymentClientDB> = await Db.connection(ClientDB.TABLE_PAYMENT).select().where({ id });
+
+        return paymentById;
+    }
+
     public insertPaymentCard = async (input: InsertPaymentDB): Promise<void> => {
         await Db.connection(ClientDB.TABLE_PAYMENT).insert(input);;
+    }
+
+    public removePaymentCard = async (id: string): Promise<void> => {
+        await Db.connection(ClientDB.TABLE_PAYMENT).delete().where({ id });
     }
 
 }
