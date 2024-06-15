@@ -69,14 +69,8 @@ export class UsersBusiness {
     const { authorization, name, role, email, password, address, age, cpf, schooling} = input;
 
     const verifyToken = this.token.getPayload(authorization.split(" ")[1]);
-    if (verifyToken === null) {
-      throw new BadRequest("Você não tem permissão para acessar este recurso");
-    }
-
-    if (verifyToken.role !== ROLE.ADMIN) {
-      throw new BadRequest(
-        "Solicite ao ADMIN do sitema suporte para este recurso"
-      );
+    if (verifyToken === null || verifyToken.role !== ROLE.ADMIN) {
+      throw new Unouthorized("Você não tem permissão para acessar este recurso");
     }
 
     const [EmailExists] = await this.DB.findUserByEmail(email);
@@ -174,9 +168,10 @@ export class UsersBusiness {
 
     const verifyToken = this.token.getPayload(authorization.split(" ")[1]);
 
-    if (verifyToken === null) {
-      throw new BadRequest("Você não tem permissão para acessar este recurso");
+    if (verifyToken === null || verifyToken.role !== ROLE.ADMIN) {
+      throw new Unouthorized("Você não tem permissão para acessar este recurso");
     }
+
 
     const [exists] = await this.DB.findUserById(id);
 
@@ -218,9 +213,10 @@ export class UsersBusiness {
 
     const verifyToken = this.token.getPayload(authorization.split(" ")[1]);
 
-    if (verifyToken === null) {
-      throw new BadRequest("Você não tem permissão para acessar este recurso");
+    if (verifyToken === null || verifyToken.role !== ROLE.ADMIN) {
+      throw new Unouthorized("Você não tem permissão para acessar este recurso");
     }
+
 
     if (verifyToken.role !== ROLE.ADMIN) {
         throw new BadRequest(

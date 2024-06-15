@@ -1,5 +1,5 @@
 import { GetBanners } from "../../dto/banners";
-import { BannersDB, InsertBannersDB } from "../../dto/banners/db";
+import { BannersDB, InsertBannersDB, UpdateBannersDB } from "../../dto/banners/db";
 
 export class BannerModel {
     constructor(
@@ -89,5 +89,15 @@ export class BannerModel {
             cta: this.getCta(),
             created_at: this.getCreatedAt(),
            }
+    }
+
+    public updateBanner = (): UpdateBannersDB => {
+        return {
+            title: this.getTitle(),
+            sub_title: this.getSubTitle(),
+            cta: this.getCta(),
+            image_url: this.getImageUrl(),
+            updated_at: this.getUpdatedAt()
+        }
     }
 }

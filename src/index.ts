@@ -3,6 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import { users } from "./routes/users";
 import { client } from "./routes/client";
+import { Banner } from "./routes/banners";
 dotenv.config();
 
 const bootstrap = express();
@@ -16,6 +17,10 @@ bootstrap.use("/users", users);
 
 //CLIENT
 bootstrap.use("/client", client);
+
+//BANNERS
+
+bootstrap.use("/banners", Banner);
 
 
 

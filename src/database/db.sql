@@ -78,7 +78,7 @@ CREATE TABLE IF NOT EXISTS banners(
     cta TEXT NOT NULL,
     image_url TEXT NOT NULL,
     created_at TEXT NOT NULL,
-    UPDATED_at TEXT
+    updated_at TEXT
 );
 
 
