@@ -82,3 +82,16 @@ CREATE TABLE IF NOT EXISTS banners(
 );
 
 
+-- TABELA DE PRODUTOS
+
+
+CREATE TABLE IF NOT EXISTS products(
+    id TEXT NOT NULL UNIQUE PRIMARY KEY,
+    title TEXT NOT NULL,
+    description TEXT NOT NULL,
+    price INTEGER NOT NULL,
+    discount INTEGER,
+    image_url TEXT NOT NULL,
+    created_at TEXT NOT NULL,
+    updated_at TEXT
+);
