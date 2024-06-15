@@ -4,6 +4,7 @@ import { Request, Response } from "express";
 import { BaseError } from "../../errors/BaseError";
 import { DeleteAdressClientSchema, DeletePaymentSchema, FindClientSchema, InsertAdressClientSchema, InsertPaymentSchema, LoginClientSchema, SignupClientInputDTO, SignupClientOutputDTO, SignupClientSchema, UpdateAdressClientSchema, deleteClientSchema, updateClientSchema } from "../../dto/client";
 
+
 export class ClientController {
     constructor(
         private readonly clientBusiness: ClientBusiness
@@ -11,15 +12,17 @@ export class ClientController {
 
     public Signup = async (req: Request, res: Response): Promise<void> => {
         try {
-            const input: SignupClientInputDTO = SignupClientSchema.parse({ ...req.body });
+            const input: SignupClientInputDTO = SignupClientSchema.parse({
+                ...req.body
+             });
             const output: SignupClientOutputDTO = await this.clientBusiness.signup(input);
             res.status(201).send(output)
-        } catch (err) {
+        } catch (err) {            
             if (err instanceof ZodError) {
                 res.status(400).send(err.issues);
             } else if (err instanceof BaseError) {
                 res.status(err.statusCode).send(err.message);
-            } else {
+            }else {
                 res.status(500).json({
                     message: "Erro não tratado",
                     descricao: err

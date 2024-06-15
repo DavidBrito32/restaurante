@@ -7,8 +7,10 @@ dotenv.config();
 
 const bootstrap = express();
 
+
 bootstrap.use(cors());
 bootstrap.use(express.json());
+
 //USUARIO DASHBOARD
 bootstrap.use("/users", users);
 

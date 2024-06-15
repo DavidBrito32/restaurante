@@ -23,16 +23,13 @@ export class ClientBusiness {
         const exists = await this.clientDb.findClientByEmail(email);
         const cpfExists = await this.clientDb.findClientByCpf(cpf);
 
-        if (exists) {
+        if (exists || cpfExists) {
             throw new BadRequest("Desculpe, verifique os dados informados e tente novamente!");
-        }
-
-        if (cpfExists) {
-            throw new BadRequest("Desculpe, verifique os dados informados e tente novamente!");;
         }
 
         const id = this.idManager.generate();
         const hashedPassword = await this.hashManager.hash(password);
+
         const client = new ClientModel(id, name, email, avatar !== undefined ? avatar : null, hashedPassword, cpf, dateOfBirth).insertClientDB();
 
         await this.clientDb.insertClient(client);
@@ -291,6 +288,4 @@ export class ClientBusiness {
         }
 
     }
-
-
 }

@@ -69,6 +69,16 @@ CREATE TABLE IF NOT EXISTS payment_cards (
 
 -- -----------------------------------------;
 
-select * from payment_cards;
+-- TABELA DE BANNERS
+
+CREATE TABLE IF NOT EXISTS banners(
+    id TEXT NOT NULL UNIQUE PRIMARY KEY,
+    title TEXT NOT NULL,
+    sub_title TEXT NOT NULL,
+    cta TEXT NOT NULL,
+    image_url TEXT NOT NULL,
+    created_at TEXT NOT NULL,
+    UPDATED_at TEXT
+);
 
 

@@ -7,8 +7,8 @@ import { HashManager } from "../../services/hashManager";
 import { IdGenerator } from "../../services/uuid";
 
 export const client = express.Router();
-const controller = new ClientController(new ClientBusiness(new ClientDB(), new TokenManager(), new HashManager(), new IdGenerator()));
 
+const controller = new ClientController(new ClientBusiness(new ClientDB(), new TokenManager(), new HashManager(), new IdGenerator()));
 
 client.post("/signup", controller.Signup);
 
