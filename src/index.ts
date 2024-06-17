@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import { users } from "./routes/users";
 import { client } from "./routes/client";
 import { Banner } from "./routes/banners";
+import { Products } from "./routes/products";
 dotenv.config();
 
 const bootstrap = express();
@@ -19,8 +20,10 @@ bootstrap.use("/users", users);
 bootstrap.use("/client", client);
 
 //BANNERS
-
 bootstrap.use("/banners", Banner);
+
+//PRODUCTS
+bootstrap.use("/products", Products);
 
 
 

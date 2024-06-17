@@ -1,3 +1,6 @@
+import { GetProducts } from "../../dto/products";
+import { ProductsDB, UpdateProductsDB } from "../../dto/products/db";
+
 export class ProductModel {
     constructor(
         private id: string,
@@ -10,67 +13,105 @@ export class ProductModel {
         private updatedAt: string | null
     ){}
 
-    public getId = (): string => {
+    private getId = (): string => {
         return this.id;
     }
 
-    public setId = (id: string): void => {
+    private setId = (id: string): void => {
         this.id = id;
     }
 
-    public getTitle = (): string => {
+    private getTitle = (): string => {
         return this.title;
     }
 
-    public setTitle = (title: string): void => {
+    private setTitle = (title: string): void => {
         this.title = title;
     }
 
-    public getDescription = (): string => {
+    private getDescription = (): string => {
         return this.description;
     }
 
-    public setDescription = (description: string): void => {
+    private setDescription = (description: string): void => {
         this.description = description;
     }
 
-    public getImageUrl = (): string => {
+    private getImageUrl = (): string => {
         return this.imageUrl;
     }
 
-    public setImageUrl = (imageUrl: string): void => {
+    private setImageUrl = (imageUrl: string): void => {
         this.imageUrl = imageUrl;
     }
 
-    public getPrice = (): number => {
+    private getPrice = (): number => {
         return this.price;
     }
 
-    public setPrice = (price: number): void => {
+    private setPrice = (price: number): void => {
         this.price = price;
     }
 
-    public getDiscount = (): number | null => {
+    private getDiscount = (): number | null => {
         return this.discount;
     }
 
-    public setDiscount = (discount: number | null): void => {
+    private setDiscount = (discount: number | null): void => {
         this.discount = discount;
     }
 
-    public getCreatedAt = (): string => {
+    private getCreatedAt = (): string => {
         return this.createdAt;
     }
 
-    public setCreatedAt = (createdAt: string): void => {
+    private setCreatedAt = (createdAt: string): void => {
         this.createdAt = createdAt;
     }
 
-    public getUpdatedAt = (): string | null => {
+    private getUpdatedAt = (): string | null => {
         return this.updatedAt;
     }
 
-    public setUpdatedAt = (updatedAt: string | null): void => {
+    private setUpdatedAt = (updatedAt: string | null): void => {
         this.updatedAt = updatedAt;
     }
+
+    public listProduct = (): GetProducts => {
+        return {
+            id: this.getId(),
+            title: this.getTitle(),
+            description: this.getDescription(),
+            price: this.getPrice(),
+            discount: this.getDiscount(),
+            createdAt: this.getCreatedAt(),
+            updatedAt: this.getUpdatedAt() 
+        }
+    }
+
+    public insertProduct = (): ProductsDB => {
+        return {
+            id: this.getId(),
+            title: this.getTitle(),
+            description: this.getDescription(),
+            price: this.getPrice(),
+            discount: this.getDiscount(),
+            image_url: this.getImageUrl(),
+            created_at: this.getCreatedAt(),
+            updated_at: this.getUpdatedAt()
+        }
+    }
+
+    public updateProduct = (): UpdateProductsDB => {
+        return {
+            title: this.getTitle(),
+            description: this.getDescription(),
+            price: this.getPrice(),
+            discount: this.getDiscount(),
+            image_url: this.getImageUrl(),
+            updated_at: this.getUpdatedAt()
+        }
+    }
+
+
 }

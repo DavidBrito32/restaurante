@@ -3,6 +3,7 @@ import { ClientBusiness } from "../../business/client";
 import { Request, Response } from "express";
 import { BaseError } from "../../errors/BaseError";
 import { DeleteAdressClientSchema, DeletePaymentSchema, FindClientSchema, InsertAdressClientSchema, InsertPaymentSchema, LoginClientSchema, SignupClientInputDTO, SignupClientOutputDTO, SignupClientSchema, UpdateAdressClientSchema, deleteClientSchema, updateClientSchema } from "../../dto/client";
+import { HTTP_STATUS } from "../../services/HTTP_STATUS_CODE/HTTP_STATUS_CODE";
 
 
 export class ClientController {
@@ -16,14 +17,14 @@ export class ClientController {
                 ...req.body
              });
             const output: SignupClientOutputDTO = await this.clientBusiness.signup(input);
-            res.status(201).send(output)
+            res.status(HTTP_STATUS.CREATED).send(output)
         } catch (err) {            
             if (err instanceof ZodError) {
-                res.status(400).send(err.issues);
+                res.status(HTTP_STATUS.BAD_REQUEST).send(err.issues);
             } else if (err instanceof BaseError) {
                 res.status(err.statusCode).send(err.message);
             }else {
-                res.status(500).json({
+                res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
                     message: "Erro não tratado",
                     descricao: err
                 });
@@ -35,14 +36,14 @@ export class ClientController {
         try {
             const input = LoginClientSchema.parse({ ...req.body });
             const output = await this.clientBusiness.login(input);
-            res.status(200).send(output);
+            res.status(HTTP_STATUS.SUCCESS).send(output);
         } catch (err) {
             if (err instanceof ZodError) {
-                res.status(400).send(err.issues);
+                res.status(HTTP_STATUS.BAD_REQUEST).send(err.issues);
             } else if (err instanceof BaseError) {
                 res.status(err.statusCode).send(err.message);
             } else {
-                res.status(500).json({
+                res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
                     message: "Erro não tratado",
                     descricao: err
                 });
@@ -58,14 +59,14 @@ export class ClientController {
             });
 
             const output = await this.clientBusiness.updateClient(input);
-            res.status(200).send(output);
+            res.status(HTTP_STATUS.SUCCESS).send(output);
         } catch (err) {
             if (err instanceof ZodError) {
-                res.status(400).send(err.issues);
+                res.status(HTTP_STATUS.BAD_REQUEST).send(err.issues);
             } else if (err instanceof BaseError) {
                 res.status(err.statusCode).send(err.message);
             } else {
-                res.status(500).json({
+                res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
                     message: "Erro não tratado",
                     descricao: err
                 });
@@ -77,14 +78,14 @@ export class ClientController {
         try {
             const input = FindClientSchema.parse({ ...req.headers });
             const output = await this.clientBusiness.findClient(input);
-            res.status(200).send(output);
+            res.status(HTTP_STATUS.SUCCESS).send(output);
         } catch (err) {
             if (err instanceof ZodError) {
-                res.status(400).send(err.issues);
+                res.status(HTTP_STATUS.BAD_REQUEST).send(err.issues);
             } else if (err instanceof BaseError) {
                 res.status(err.statusCode).send(err.message)
             } else {
-                res.status(500).json({
+                res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
                     message: "Erro não tratado",
                     descricao: err
                 });
@@ -96,14 +97,14 @@ export class ClientController {
         try {
             const input = deleteClientSchema.parse({ ...req.headers });
             const output = await this.clientBusiness.deleteClient(input);
-            res.status(200).send(output);
+            res.status(HTTP_STATUS.SUCCESS).send(output);
         } catch (err) {
             if (err instanceof ZodError) {
-                res.status(400).send(err.issues);
+                res.status(HTTP_STATUS.BAD_REQUEST).send(err.issues);
             } else if (err instanceof BaseError) {
                 res.status(err.statusCode).send(err.message);
             } else {
-                res.status(500).json({
+                res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
                     message: "Erro não tratado",
                     descricao: err
                 });
@@ -122,14 +123,14 @@ export class ClientController {
 
             const output = await this.clientBusiness.createAdress(input);
 
-            res.status(201).send(output);
+            res.status(HTTP_STATUS.CREATED).send(output);
         } catch (err) {
             if (err instanceof ZodError) {
-                res.status(400).send(err.issues);
+                res.status(HTTP_STATUS.BAD_REQUEST).send(err.issues);
             } else if (err instanceof BaseError) {
                 res.status(err.statusCode).send(err.message);
             } else {
-                res.status(500).json({
+                res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
                     message: "Erro não tratado",
                     descricao: err
                 });
@@ -146,14 +147,14 @@ export class ClientController {
             });
 
             const output = await this.clientBusiness.updateAdress(input);
-            res.status(200).send(output);
+            res.status(HTTP_STATUS.SUCCESS).send(output);
         } catch (err) {
             if (err instanceof ZodError) {
-                res.status(400).send(err.issues);
+                res.status(HTTP_STATUS.BAD_REQUEST).send(err.issues);
             } else if (err instanceof BaseError) {
                 res.status(err.statusCode).send(err.message);
             } else {
-                res.status(500).json({
+                res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
                     message: "Erro não tratado",
                     descricao: err
                 });
@@ -169,14 +170,14 @@ export class ClientController {
             });
 
             const output = await this.clientBusiness.deleteAdress(input);
-            res.status(200).send(output);
+            res.status(HTTP_STATUS.SUCCESS).send(output);
         } catch (err) {
             if (err instanceof ZodError) {
-                res.status(400).send(err.issues);
+                res.status(HTTP_STATUS.BAD_REQUEST).send(err.issues);
             } else if (err instanceof BaseError) {
                 res.status(err.statusCode).send(err.message);
             } else {
-                res.status(500).json({
+                res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
                     message: "Erro não tratado",
                     descricao: err
                 });
@@ -195,14 +196,14 @@ export class ClientController {
 
             const output = await this.clientBusiness.createPaymentCard(input);
 
-            res.status(201).send(output);
+            res.status(HTTP_STATUS.CREATED).send(output);
         } catch (err) {
             if (err instanceof ZodError) {
-                res.status(400).send(err.issues);
+                res.status(HTTP_STATUS.BAD_REQUEST).send(err.issues);
             } else if (err instanceof BaseError) {
                 res.status(err.statusCode).send(err.message);
             } else {
-                res.status(500).json({
+                res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
                     message: "Erro não tratado",
                     descricao: err
                 });
@@ -219,14 +220,14 @@ export class ClientController {
 
             const output = await this.clientBusiness.deletePaymentCard(input);
 
-            res.status(200).send(output);
+            res.status(HTTP_STATUS.SUCCESS).send(output);
         } catch (err) {
             if (err instanceof ZodError) {
-                res.status(400).send(err.issues);
+                res.status(HTTP_STATUS.BAD_REQUEST).send(err.issues);
             } else if (err instanceof BaseError) {
                 res.status(err.statusCode).send(err.message);
             } else {
-                res.status(500).json({
+                res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
                     message: "Erro não tratado",
                     descricao: err
                 });

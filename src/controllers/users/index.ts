@@ -3,6 +3,7 @@ import { UsersBusiness } from "../../business/users";
 import { BaseError } from "../../errors/BaseError";
 import { ZodError } from "zod";
 import { GetUserSchema, InputUserDTO, InsertUserSchema, LoginSchema, LogoffSchema, UpdateUserSchema } from "../../dto/users";
+import { HTTP_STATUS } from "../../services/HTTP_STATUS_CODE/HTTP_STATUS_CODE";
 
 export class UserController {
     constructor(private readonly userBusiness: UsersBusiness){}
@@ -14,14 +15,14 @@ export class UserController {
 			});
             const data = await this.userBusiness.GetAllUsers(token);
 
-            res.status(200).send(data)
+            res.status(HTTP_STATUS.SUCCESS).send(data)
         }catch (err) {
 			if (err instanceof ZodError) {
-				res.status(400).send(err.issues);
+				res.status(HTTP_STATUS.BAD_REQUEST).send(err.issues);
 			} else if (err instanceof BaseError) {
 				res.status(err.statusCode).send(err.message);
 			} else {
-				res.status(500).send(`Erro não tratado: DESC: ${err}`);
+				res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).send(`Erro não tratado: DESC: ${err}`);
 			}
 		}
     }
@@ -33,15 +34,15 @@ export class UserController {
 				...req.body
 			});
 
-			res.status(201).send(await this.userBusiness.CreateUser(data));
+			res.status(HTTP_STATUS.CREATED).send(await this.userBusiness.CreateUser(data));
 
         }catch (err) {
 			if (err instanceof ZodError) {
-				res.status(400).send(err.issues);
+				res.status(HTTP_STATUS.BAD_REQUEST).send(err.issues);
 			} else if (err instanceof BaseError) {
 				res.status(err.statusCode).send(err.message);
 			} else {
-				res.status(500).send(`Erro não tratado: DESC: ${err}`);
+				res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).send(`Erro não tratado: DESC: ${err}`);
 			}
 		}
     }
@@ -51,14 +52,14 @@ export class UserController {
 			const input = LoginSchema.parse(req.body);
 			const output = await this.userBusiness.Login(input);
 
-			res.status(200).send(output);
+			res.status(HTTP_STATUS.SUCCESS).send(output);
 		}catch (err) {
 			if (err instanceof ZodError) {
-				res.status(400).send(err.issues);
+				res.status(HTTP_STATUS.BAD_REQUEST).send(err.issues);
 			} else if (err instanceof BaseError) {
 				res.status(err.statusCode).send(err.message);
 			} else {
-				res.status(500).send(`Erro não tratado: DESC: ${err}`);
+				res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).send(`Erro não tratado: DESC: ${err}`);
 			}
 		}
 	}
@@ -68,14 +69,14 @@ export class UserController {
 			const input = LogoffSchema.parse(req.headers);
 			const output = await this.userBusiness.Logoff(input);
 
-			res.status(200).send(output);
+			res.status(HTTP_STATUS.SUCCESS).send(output);
 		}catch (err) {
 			if (err instanceof ZodError) {
-				res.status(400).send(err.issues);
+				res.status(HTTP_STATUS.BAD_REQUEST).send(err.issues);
 			} else if (err instanceof BaseError) {
 				res.status(err.statusCode).send(err.message);
 			} else {
-				res.status(500).send(`Erro não tratado: DESC: ${err}`);
+				res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).send(`Erro não tratado: DESC: ${err}`);
 			}
 		}
 	}
@@ -89,14 +90,14 @@ export class UserController {
 			});
 
 			const output = await this.userBusiness.UpdateUser(input);
-			res.status(200).send(output);
+			res.status(HTTP_STATUS.SUCCESS).send(output);
 		}catch (err) {
 			if (err instanceof ZodError) {
-				res.status(400).send(err.issues);
+				res.status(HTTP_STATUS.BAD_REQUEST).send(err.issues);
 			} else if (err instanceof BaseError) {
 				res.status(err.statusCode).send(err.message);
 			} else {
-				res.status(500).send(`Erro não tratado: DESC: ${err}`);
+				res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).send(`Erro não tratado: DESC: ${err}`);
 			}
 		}
 	}
@@ -110,14 +111,14 @@ export class UserController {
 			});
 
 			const output = await this.userBusiness.DeleteUser(input);
-			res.status(200).send(output);
+			res.status(HTTP_STATUS.SUCCESS).send(output);
 		}catch (err) {
 			if (err instanceof ZodError) {
-				res.status(400).send(err.issues);
+				res.status(HTTP_STATUS.BAD_REQUEST).send(err.issues);
 			} else if (err instanceof BaseError) {
 				res.status(err.statusCode).send(err.message);
 			} else {
-				res.status(500).send(`Erro não tratado: DESC: ${err}`);
+				res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).send(`Erro não tratado: DESC: ${err}`);
 			}
 		}
 	}

@@ -1,20 +1,20 @@
 import { Request, Response } from "express";
-import { BannersBusiness } from "../../business/banners";
+import { ProductBusiness } from "../../business/products";
 import { ZodError } from "zod";
 import { BaseError } from "../../errors/BaseError";
-import { CreateBannersInputSchema, DeleteBannersInputSchema, UpdateBannersInputSchema } from "../../dto/banners";
+import { CreateProductsInputSchema, ProductDeleteSchema, ProductsUpdateInputSchema } from "../../dto/products";
 import { HTTP_STATUS } from "../../services/HTTP_STATUS_CODE/HTTP_STATUS_CODE";
 
-
-export class BannersController {
+export class ProductController {
     constructor(
-        private readonly bannerBusiness: BannersBusiness
+        private productBusiness: ProductBusiness
     ){}
 
-    public GetBanners = async (req: Request, res: Response): Promise<void> => {
+    public GetProducts = async (req: Request, res: Response): Promise<void> => {
         try{
-            res.status(HTTP_STATUS.SUCCESS).send(await this.bannerBusiness.getBanners());
-        }catch (err) {
+            const output = await this.productBusiness.getProducts();
+            res.status(HTTP_STATUS.SUCCESS).send(output);
+        }catch (err) {            
             if (err instanceof ZodError) {
                 res.status(HTTP_STATUS.BAD_REQUEST).send(err.issues);
             } else if (err instanceof BaseError) {
@@ -28,15 +28,16 @@ export class BannersController {
         }
     }
 
-    public CreateBanner = async (req: Request, res: Response): Promise<void> => {
+    public CreateProducts = async (req: Request, res: Response): Promise<void> => {
         try{
-            const input = CreateBannersInputSchema.parse({
+            const input = CreateProductsInputSchema.parse({
                 authorization: req.headers.authorization,
                 ...req.body
             });
-            const output = await this.bannerBusiness.createBanners(input);
-            res.status(201).send(output);            
-        } catch (err) {
+
+            const output = await this.productBusiness.createProduct(input);
+            res.status(HTTP_STATUS.CREATED).send(output);
+        }catch (err) {            
             if (err instanceof ZodError) {
                 res.status(HTTP_STATUS.BAD_REQUEST).send(err.issues);
             } else if (err instanceof BaseError) {
@@ -50,18 +51,17 @@ export class BannersController {
         }
     }
 
-    public UpdateBanner = async (req: Request, res: Response): Promise<void> => {
+    public UpdateProducts = async (req: Request, res: Response): Promise<void> => {
         try{
-            const input = UpdateBannersInputSchema.parse({
+            const input = ProductsUpdateInputSchema.parse({
                 authorization: req.headers.authorization,
                 id: req.params.id,
                 ...req.body
             });
 
-            const output = await this.bannerBusiness.updateBanners(input);
-
+            const output = await this.productBusiness.updateProduct(input);
             res.status(HTTP_STATUS.SUCCESS).send(output);
-        }catch (err) {
+        }catch (err) {            
             if (err instanceof ZodError) {
                 res.status(HTTP_STATUS.BAD_REQUEST).send(err.issues);
             } else if (err instanceof BaseError) {
@@ -75,19 +75,18 @@ export class BannersController {
         }
     }
 
-    public DeleteBanner = async (req: Request, res: Response): Promise<void> => { 
-        try {
-
-            const input = DeleteBannersInputSchema.parse({
+    public DeleteProducts = async (req: Request, res: Response): Promise<void> => {
+        try{
+            const input = ProductDeleteSchema.parse({
                 authorization: req.headers.authorization,
                 id: req.params.id
             });
 
-            const output = await this.bannerBusiness.deleteBanner(input);
+            const output = await this.productBusiness.deleteProduct(input);
             res.status(HTTP_STATUS.SUCCESS).send(output);
-        } catch (err) {
+        }catch (err) {            
             if (err instanceof ZodError) {
-                res.status(HTTP_STATUS.BAD_REQUEST).send(err.issues);
+                res.status(400).send(err.issues);
             } else if (err instanceof BaseError) {
                 res.status(err.statusCode).send(err.message);
             }else {
