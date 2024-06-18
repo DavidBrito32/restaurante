@@ -1,5 +1,5 @@
 import { ClientDB } from "../../database/client";
-import { AddresClient, DeleteAdressClientInputDTO, DeleteAdressClientOutputDTO, DeletePaymentInputDTO, DeletePaymentOutputDTO, FindClientInputDTO, FindClientOutputDTO, GetClientOutPutDTO, GetPaymentClient, InsertAdressClientInputDTO, InsertAdressClientOutputDTO, InsertPaymentInputDTO, InsertPaymentOutputDTO, LoginClientInputDTO, LoginClientOutputDTO, SignupClientInputDTO, SignupClientOutputDTO, UpdateAdressClientInputDTO, UpdateAdressClientOutputDTO, deleteClientInputDTO, deleteClientOutputDTO, updateClient, updateClientOutputDTO } from "../../dto/client";
+import { AddresClient, DeleteAdressClientInputDTO, DeleteAdressClientOutputDTO, DeletePaymentInputDTO, DeletePaymentOutputDTO, FindClientInputDTO, GetClientOutPutDTO, GetPaymentClient, InsertAdressClientInputDTO, InsertAdressClientOutputDTO, InsertPaymentInputDTO, InsertPaymentOutputDTO, LoginClientInputDTO, LoginClientOutputDTO, SignupClientInputDTO, SignupClientOutputDTO, UpdateAdressClientInputDTO, UpdateAdressClientOutputDTO, deleteClientInputDTO, deleteClientOutputDTO, updateClient, updateClientOutputDTO } from "../../dto/client";
 import { BadRequest } from "../../errors/BadRequest";
 import { NotFound } from "../../errors/NotFound";
 import { Unouthorized } from "../../errors/Unouthorized";
@@ -88,9 +88,9 @@ export class ClientBusiness {
             name: client.name,
             avatar: client.avatar,
             email: client.email,
+            dateOfBirth: client.date_of_birth,
             address: address,
             savedPayments: payment,
-            dateOfBirth: client.date_of_birth
         }
 
         return output;

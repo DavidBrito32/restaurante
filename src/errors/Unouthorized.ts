@@ -3,7 +3,7 @@ import { BaseError } from "./BaseError";
 
 export class Unouthorized extends BaseError {
 	constructor(
-		message: string = "não autorizado",
+		message: string = "Você não tem permissão para acessar este recurso, solicite instruções ao administrador do sistema",
 	){
 		super(message, HTTP_STATUS.UNAUTHORIZED);
 	}

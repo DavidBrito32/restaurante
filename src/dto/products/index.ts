@@ -50,9 +50,7 @@ export const CreateProductsInputSchema = z.object({
 }).transform(data => data as ProductsInputDTO);
 
 
-
 //UPDATE PRODUCT
-
 export interface ProductsUpdateInputDTO {
     authorization: string;
     id: string;
