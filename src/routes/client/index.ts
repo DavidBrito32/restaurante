@@ -8,7 +8,14 @@ import { IdGenerator } from "../../services/uuid";
 
 export const client = express.Router();
 
-const controller = new ClientController(new ClientBusiness(new ClientDB(), new TokenManager(), new HashManager(), new IdGenerator()));
+const controller = new ClientController(
+  new ClientBusiness(
+    new ClientDB(),
+    new TokenManager(),
+    new HashManager(),
+    new IdGenerator(),
+  ),
+);
 
 client.post("/signup", controller.Signup);
 
@@ -20,7 +27,6 @@ client.delete("/delete", controller.DeleteClient);
 
 client.get("/profile", controller.GetClient);
 
-
 // ADRESS
 
 client.post("/adress", controller.CreateAdress);
@@ -28,7 +34,6 @@ client.post("/adress", controller.CreateAdress);
 client.put("/adress/:id", controller.UpdateAdress);
 
 client.delete("/adress/:id", controller.DeleteAdress);
-
 
 //  PAYMENT
 

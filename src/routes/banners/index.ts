@@ -7,7 +7,13 @@ import { TokenManager } from "../../services/tokenManager";
 
 export const Banner = Express.Router();
 
-const controller = new BannersController(new BannersBusiness(new BannersDataBase(), new IdGenerator(), new TokenManager()));
+const controller = new BannersController(
+  new BannersBusiness(
+    new BannersDataBase(),
+    new IdGenerator(),
+    new TokenManager(),
+  ),
+);
 
 Banner.get("/", controller.GetBanners);
 

@@ -10,7 +10,6 @@ dotenv.config();
 
 const bootstrap = express();
 
-
 bootstrap.use(cors());
 bootstrap.use(express.json());
 
@@ -26,5 +25,11 @@ bootstrap.use("/banners", Banner);
 //PRODUCTS
 bootstrap.use("/products", Products);
 
-bootstrap.get("/ping", (req, res) => res.status(HTTP_STATUS.SUCCESS).send("Pong!"));
-bootstrap.listen(process.env.SERVER_PORT as string, () => console.log(`server is running at port http://localhost:${process.env.SERVER_PORT}/`));
+bootstrap.get("/ping", (req, res) =>
+  res.status(HTTP_STATUS.SUCCESS).send("Pong!"),
+);
+bootstrap.listen(process.env.SERVER_PORT as string, () =>
+  console.log(
+    `server is running at port http://localhost:${process.env.SERVER_PORT}/`,
+  ),
+);

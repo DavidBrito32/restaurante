@@ -4,15 +4,18 @@ import dotenv from "dotenv";
 dotenv.config();
 
 export class HashManager {
-	public hash = async (plaintext: string): Promise<string> => {
-		const rounds = Number(process.env.JWT_ROUND_SALTS);
-		const salt = await bcrypt.genSalt(rounds);
-		const hash = await bcrypt.hash(plaintext, salt);
-		return hash;
-	};
+  public hash = async (plaintext: string): Promise<string> => {
+    const rounds = Number(process.env.JWT_ROUND_SALTS);
+    const salt = await bcrypt.genSalt(rounds);
+    const hash = await bcrypt.hash(plaintext, salt);
+    return hash;
+  };
 
-	public compare = async (plaintext: string,	hash: string): Promise<boolean> => {
-		const sucess: boolean = await bcrypt.compare(plaintext, hash);
-		return sucess;
-	};
+  public compare = async (
+    plaintext: string,
+    hash: string,
+  ): Promise<boolean> => {
+    const sucess: boolean = await bcrypt.compare(plaintext, hash);
+    return sucess;
+  };
 }

@@ -1,6 +1,6 @@
 import { UpdateUserDB, UserDataBase } from "../../database/users";
 import {
-    DeleteUserInputDTO,
+  DeleteUserInputDTO,
   DeleteUserOutputDTO,
   GetUsers,
   GetUsersInputDTO,
@@ -27,23 +27,24 @@ export class UsersBusiness {
     private readonly DB: UserDataBase,
     private readonly token: TokenManager,
     private readonly hashManager: HashManager,
-    private readonly idManager: IdGenerator
+    private readonly idManager: IdGenerator,
   ) {}
 
-  public GetAllUsers = async (input: GetUsersInputDTO): Promise<Array<GetUsers>> => {
+  public GetAllUsers = async (
+    input: GetUsersInputDTO,
+  ): Promise<Array<GetUsers>> => {
     const { authorization } = input;
     const verifyToken = this.token.getPayload(authorization.split(" ")[1]);
 
-    if(verifyToken === null){
-        throw new BadRequest("Você não tem permissão para acessar este recurso");
+    if (verifyToken === null) {
+      throw new BadRequest("Você não tem permissão para acessar este recurso");
     }
 
     if (verifyToken.role !== ROLE.ADMIN) {
-        throw new BadRequest(
-          "Solicite ao ADMIN do sitema suporte para este recurso"
-        );
-      }
-
+      throw new BadRequest(
+        "Solicite ao ADMIN do sitema suporte para este recurso",
+      );
+    }
 
     const data = await this.DB.listUsers();
 
@@ -58,31 +59,45 @@ export class UsersBusiness {
         usuario.schooling,
         usuario.age,
         usuario.is_active,
-        usuario.address
-      ).GetUser()
+        usuario.address,
+      ).GetUser(),
     );
 
     return Users;
   }; //OK ✅
 
-  public CreateUser = async (input: InputUserDTO): Promise<createUserOutputDTO> => {
-    const { authorization, name, role, email, password, address, age, cpf, schooling} = input;
+  public CreateUser = async (
+    input: InputUserDTO,
+  ): Promise<createUserOutputDTO> => {
+    const {
+      authorization,
+      name,
+      role,
+      email,
+      password,
+      address,
+      age,
+      cpf,
+      schooling,
+    } = input;
 
     const verifyToken = this.token.getPayload(authorization.split(" ")[1]);
     if (verifyToken === null || verifyToken.role !== ROLE.ADMIN) {
-      throw new Unouthorized("Você não tem permissão para acessar este recurso");
+      throw new Unouthorized(
+        "Você não tem permissão para acessar este recurso",
+      );
     }
 
     const [EmailExists] = await this.DB.findUserByEmail(email);
     const [CPFExists] = await this.DB.findUserByCPF(cpf);
 
-      if(EmailExists){
-        throw new BadRequest("E-mail ja registrado, Por favor utilize outro");
-      }
+    if (EmailExists) {
+      throw new BadRequest("E-mail ja registrado, Por favor utilize outro");
+    }
 
-      if(CPFExists){
-        throw new BadRequest("Verifique o CPF informado e tente novamente");
-      }
+    if (CPFExists) {
+      throw new BadRequest("Verifique o CPF informado e tente novamente");
+    }
 
     const HasId = this.idManager.generate();
 
@@ -113,13 +128,13 @@ export class UsersBusiness {
 
     if (!exists) {
       throw new NotFound(
-        "Usuario não encontrado, por favor verifique seu email"
+        "Usuario não encontrado, por favor verifique seu email",
       );
     }
 
     const checkPassword: boolean = await this.hashManager.compare(
       password,
-      exists.password
+      exists.password,
     );
 
     if (!checkPassword) {
@@ -144,34 +159,60 @@ export class UsersBusiness {
   }; //OK ✅
 
   public Logoff = async (input: LogoffInputDTO): Promise<LogoffOutputDTO> => {
-        const { authorization } = input;
-        const verifyToken = this.token.getPayload(authorization.split(" ")[1]);
-        if (verifyToken === null) {
-          throw new BadRequest("Você não tem permissão para acessar este recurso");
-        }        
-        const [exists] = await this.DB.findUserById(verifyToken.id);
+    const { authorization } = input;
+    const verifyToken = this.token.getPayload(authorization.split(" ")[1]);
+    if (verifyToken === null) {
+      throw new BadRequest("Você não tem permissão para acessar este recurso");
+    }
+    const [exists] = await this.DB.findUserById(verifyToken.id);
 
-        if(exists.id !== verifyToken.id){
-            throw new BadRequest("Você não tem permissão para alterar o status de outra pessoa");
-        }
+    if (exists.id !== verifyToken.id) {
+      throw new BadRequest(
+        "Você não tem permissão para alterar o status de outra pessoa",
+      );
+    }
 
-        const user = new UserModel(exists.id, exists.name, exists.cpf, exists.email, exists.password, exists.role, exists.schooling, exists.age, false, exists.address).UpdateUser();
-        await this.DB.updateUser(exists.id, user);
+    const user = new UserModel(
+      exists.id,
+      exists.name,
+      exists.cpf,
+      exists.email,
+      exists.password,
+      exists.role,
+      exists.schooling,
+      exists.age,
+      false,
+      exists.address,
+    ).UpdateUser();
+    await this.DB.updateUser(exists.id, user);
 
-        return {
-            message: "Usuario desconectado com sucesso!"
-        }
+    return {
+      message: "Usuario desconectado com sucesso!",
+    };
   }; //OK ✅
 
-  public UpdateUser = async (input: UpdateUserInputDTO): Promise<UpdateUserOutputDTO> => {
-    const { authorization, id, address, age, email, name, password, role, schooling} = input;
+  public UpdateUser = async (
+    input: UpdateUserInputDTO,
+  ): Promise<UpdateUserOutputDTO> => {
+    const {
+      authorization,
+      id,
+      address,
+      age,
+      email,
+      name,
+      password,
+      role,
+      schooling,
+    } = input;
 
     const verifyToken = this.token.getPayload(authorization.split(" ")[1]);
 
     if (verifyToken === null || verifyToken.role !== ROLE.ADMIN) {
-      throw new Unouthorized("Você não tem permissão para acessar este recurso");
+      throw new Unouthorized(
+        "Você não tem permissão para acessar este recurso",
+      );
     }
-
 
     const [exists] = await this.DB.findUserById(id);
 
@@ -179,9 +220,8 @@ export class UsersBusiness {
       throw new NotFound("usuario não encontrado");
     }
 
-
     let newPassword: string | undefined;
-    
+
     if (password) {
       newPassword = await this.hashManager.hash(password);
     }
@@ -196,7 +236,7 @@ export class UsersBusiness {
       schooling || exists.schooling,
       age || exists.age,
       exists.is_active,
-      address || exists.address
+      address || exists.address,
     );
 
     const update: UpdateUserDB = userAtualizado.UpdateUser();
@@ -208,32 +248,35 @@ export class UsersBusiness {
     };
   }; //OK ✅
 
-  public DeleteUser = async (input: DeleteUserInputDTO): Promise<DeleteUserOutputDTO> => {
+  public DeleteUser = async (
+    input: DeleteUserInputDTO,
+  ): Promise<DeleteUserOutputDTO> => {
     const { authorization, id } = input;
 
     const verifyToken = this.token.getPayload(authorization.split(" ")[1]);
 
     if (verifyToken === null || verifyToken.role !== ROLE.ADMIN) {
-      throw new Unouthorized("Você não tem permissão para acessar este recurso");
+      throw new Unouthorized(
+        "Você não tem permissão para acessar este recurso",
+      );
     }
 
-
     if (verifyToken.role !== ROLE.ADMIN) {
-        throw new BadRequest(
-          "Solicite ao ADMIN do sitema suporte para este recurso"
-        );
+      throw new BadRequest(
+        "Solicite ao ADMIN do sitema suporte para este recurso",
+      );
     }
 
     const [exists] = await this.DB.findUserById(id);
 
-    if (!exists){
-        throw new NotFound("usuario não encontrado");
-    } 
+    if (!exists) {
+      throw new NotFound("usuario não encontrado");
+    }
 
     await this.DB.removeUser(exists.id);
 
     return {
-        message: "Usuario deletado com sucesso!"
+      message: "Usuario deletado com sucesso!",
     };
-  }  //OK ✅
+  }; //OK ✅
 }

@@ -5,9 +5,14 @@ import { ProductsDatabase } from "../../database/products";
 import { IdGenerator } from "../../services/uuid";
 import { TokenManager } from "../../services/tokenManager";
 
-
 export const Products = Express.Router();
-const controller = new ProductController(new ProductBusiness(new ProductsDatabase(), new IdGenerator(), new TokenManager()));
+const controller = new ProductController(
+  new ProductBusiness(
+    new ProductsDatabase(),
+    new IdGenerator(),
+    new TokenManager(),
+  ),
+);
 
 Products.get("/", controller.GetProducts);
 

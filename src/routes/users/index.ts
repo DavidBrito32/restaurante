@@ -7,7 +7,14 @@ import { HashManager } from "../../services/hashManager";
 import { IdGenerator } from "../../services/uuid";
 
 export const users = express.Router();
-const controller = new UserController(new UsersBusiness(new UserDataBase(), new TokenManager(), new HashManager(), new IdGenerator()));
+const controller = new UserController(
+  new UsersBusiness(
+    new UserDataBase(),
+    new TokenManager(),
+    new HashManager(),
+    new IdGenerator(),
+  ),
+);
 
 users.get("/", controller.getAllUsers);
 

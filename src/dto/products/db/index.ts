@@ -1,22 +1,19 @@
 export interface ProductsDB {
-    id: string;
-    title: string;
-    description: string;
-    price: number;
-    discount: number | null;
-    image_url: string;
-    created_at: string;
-    updated_at: string | null;
-};
+  id: string;
+  title: string;
+  description: string;
+  price: number;
+  discount: number | null;
+  image_url: string;
+  created_at: string;
+  updated_at: string | null;
+}
 
 export interface UpdateProductsDB {
-    title: string;
-    description: string;
-    price: number;
-    discount: number | null;
-    image_url: string;
-    updated_at: string | null;
-};
-
-
-
+  title: string;
+  description: string;
+  price: number;
+  discount: number | null;
+  image_url: string;
+  updated_at: string | null;
+}
