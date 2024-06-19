@@ -92,7 +92,13 @@ export class ProductBusiness {
       throw new BadRequest("produto não encontrado");
     }
 
-    if (!title && !description && !price && !discount && !imageUrl) {
+    if (
+      !title &&
+      !description &&
+      !price &&
+      discount === undefined &&
+      !imageUrl
+    ) {
       throw new BadRequest("Informar ao menos um dado para atualização");
     }
 
@@ -102,7 +108,7 @@ export class ProductBusiness {
       description || exists.description,
       imageUrl || exists.image_url,
       price || exists.price,
-      discount || exists.discount,
+      discount !== undefined ? discount : exists.discount,
       exists.created_at,
       new Date().toISOString(),
     );

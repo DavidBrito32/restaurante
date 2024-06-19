@@ -1,5 +1,6 @@
 import knex from "knex";
 import dotenv from "dotenv";
+import { Database } from "sqlite3";
 dotenv.config();
 
 export abstract class Db {
@@ -13,7 +14,7 @@ export abstract class Db {
     pool: {
       min: 0,
       max: 1,
-      afterCreate: (conn: any, cb: any) => {
+      afterCreate: (conn: Database, cb: (err: Error | null) => void) => {
         conn.run("PRAGMA foreign_keys = ON", cb);
       },
     },

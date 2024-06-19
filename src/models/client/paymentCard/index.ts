@@ -1,5 +1,5 @@
 import { GetPaymentClient } from "../../../dto/client";
-import { InsertPaymentDB, PaymentCardsDB } from "../../../dto/client/db";
+import { InsertPaymentDB } from "../../../dto/client/db";
 
 export enum PAYMENTMETHOD {
   DEBIT = "DEBITO",

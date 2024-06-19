@@ -1,9 +1,5 @@
 import { GetBanners } from "../../dto/banners";
-import {
-  BannersDB,
-  InsertBannersDB,
-  UpdateBannersDB,
-} from "../../dto/banners/db";
+import { InsertBannersDB, UpdateBannersDB } from "../../dto/banners/db";
 
 export class BannerModel {
   constructor(
