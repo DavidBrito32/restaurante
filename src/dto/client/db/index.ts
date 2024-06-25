@@ -1,6 +1,16 @@
 import { PAYMENTMETHOD } from "../../../models/client/paymentCard";
 import { ROLE } from "../../../services/tokenManager";
 
+export enum OPERATOR {
+  VISA = "VISA",
+  ELO = "ELO",
+  MASTERCARD = "MASTERCARD",
+  AMERICAN_EXPRESS = "AMERICAN EXPRESS",
+  HIPERCARD = "HIPER CARD",
+  DISCOVER = "DISCOVER",
+  MAESTRO = "MAESTRO"
+}
+
 export interface AddressDB {
   id: string;
   client_id: string;
@@ -9,6 +19,7 @@ export interface AddressDB {
   complement: string | null;
   district: string;
   primary_adress: boolean;
+  operador: OPERATOR;
   city: string;
   state: string;
   zip_code: string;
@@ -114,6 +125,7 @@ export interface PaymentCardsDB {
   client_id: string;
   number_card: number;
   client_name: string;
+  operator: OPERATOR;
   cvv: number;
   method: PAYMENTMETHOD;
   expires_in: string;
@@ -124,6 +136,7 @@ export interface InsertPaymentDB {
   id: string;
   client_id: string;
   number_Card: number;
+  operator: OPERATOR,
   client_name: string;
   method: PAYMENTMETHOD;
   expires_in: string;

@@ -60,6 +60,7 @@ export const CreateBannersInputSchema = z
       })
       .min(5),
   })
+  .strict()
   .transform((data) => data as BannersInputDTO);
 
 // UPDATE BANNERS
@@ -118,6 +119,7 @@ export const UpdateBannersInputSchema = z
       .min(5)
       .optional(),
   })
+  .strict()
   .transform((data) => data as UpdateBannersInputDTO);
 
 // DELETE BANNERS
@@ -148,4 +150,5 @@ export const DeleteBannersInputSchema = z
       })
       .min(10),
   })
+  .strict()
   .transform((data) => data as DeleteBannersInputDTO);

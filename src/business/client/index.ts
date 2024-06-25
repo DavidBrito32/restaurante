@@ -39,7 +39,7 @@ export class ClientBusiness {
     private readonly tokenManager: TokenManager,
     private readonly hashManager: HashManager,
     private readonly idManager: IdGenerator,
-  ) {}
+  ) { }
 
   public signup = async (
     input: SignupClientInputDTO,
@@ -154,6 +154,7 @@ export class ClientBusiness {
           payment.client_name,
           payment.method,
           payment.expires_in,
+          payment.operator,
           payment.created_at,
           payment.cvv,
         ).getPayment(),
@@ -374,7 +375,7 @@ export class ClientBusiness {
   public createPaymentCard = async (
     input: InsertPaymentInputDTO,
   ): Promise<InsertPaymentOutputDTO> => {
-    const { authorization, clientName, cvv, expiresIn, method, numberCard } =
+    const { authorization, clientName, cvv, expiresIn, method, numberCard, operator } =
       input;
     const payload = this.tokenManager.getPayload(authorization.split(" ")[1]);
     if (payload === null) {
@@ -404,6 +405,7 @@ export class ClientBusiness {
       clientName,
       method,
       expiresIn,
+      operator,
       createdAt,
       cvv,
     );
@@ -443,6 +445,7 @@ export class ClientBusiness {
       cardMethod.client_name,
       cardMethod.method,
       cardMethod.expires_in,
+      cardMethod.operator,
       cardMethod.created_at,
       cardMethod.cvv,
     );

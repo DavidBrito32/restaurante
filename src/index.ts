@@ -6,6 +6,7 @@ import { client } from "./routes/client";
 import { Banner } from "./routes/banners";
 import { Products } from "./routes/products";
 import { HTTP_STATUS } from "./services/HTTP_STATUS_CODE/HTTP_STATUS_CODE";
+import { Orders } from "./routes/orders";
 dotenv.config();
 
 const bootstrap = express();
@@ -24,6 +25,9 @@ bootstrap.use("/banners", Banner);
 
 //PRODUCTS
 bootstrap.use("/products", Products);
+
+//ORDERS
+bootstrap.use("/orders", Orders);
 
 bootstrap.get("/ping", (req, res) =>
   res.status(HTTP_STATUS.SUCCESS).send("Pong!"),

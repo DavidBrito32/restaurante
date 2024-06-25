@@ -58,6 +58,7 @@ CREATE TABLE IF NOT EXISTS payment_cards (
     client_name TEXT NOT NULL,
     method TEXT NOT NULL,
     expires_in TEXT NOT NULL,
+    operator TEXT NOT NULL,
     cvv INTEGER NOT NULL,
     created_at TEXT NOT NULL,
     FOREIGN KEY (client_id) REFERENCES client(id) 
@@ -94,4 +95,34 @@ CREATE TABLE IF NOT EXISTS products(
     image_url TEXT NOT NULL,
     created_at TEXT NOT NULL,
     updated_at TEXT
+);
+
+
+-- TABELA DE PEDIDOS
+
+CREATE TABLE IF NOT EXISTS orders(
+    id TEXT NOT NULL UNIQUE PRIMARY KEY,
+    client_id TEXT NOT NULL,
+    delivery_address TEXT NOT NULL,
+    order_status TEXT NOT NULL,
+    order_date TEXT NOT NULL,
+    completed_at TEXT,
+    notes TEXT,
+    payment_method TEXT NOT NULL,
+    payment_id TEXT,
+    sub_total REAL NOT NULL,
+    FOREIGN KEY (client_id) REFERENCES client(id) 
+    ON UPDATE CASCADE ON DELETE CASCADE
+    FOREIGN KEY (payment_id) REFERENCES payment_cards(id)
+    ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+
+CREATE TABLE IF NOT EXISTS orders_items(
+    product_id TEXT NOT NULL,
+    order_id TEXT NOT NULL,
+    quantity INTEGER NOT NULL,
+    unit_price REAL NOT NULL,
+    FOREIGN KEY (product_id) REFERENCES products(id)  ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY (order_id) REFERENCES orders(id)  ON UPDATE CASCADE ON DELETE CASCADE
 );

@@ -66,6 +66,7 @@ export const CreateProductsInputSchema = z
       })
       .min(2),
   })
+  .strict()
   .transform((data) => data as ProductsInputDTO);
 
 //UPDATE PRODUCT
@@ -132,6 +133,7 @@ export const ProductsUpdateInputSchema = z
       .min(2)
       .optional(),
   })
+  .strict()
   .transform((data) => data as ProductsUpdateInputDTO);
 
 //DELETE PRODUCT
@@ -163,4 +165,5 @@ export const ProductDeleteSchema = z
       })
       .min(10),
   })
+  .strict()
   .transform((data) => data as ProductsDeleteInputDTO);

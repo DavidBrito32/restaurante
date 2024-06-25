@@ -37,6 +37,7 @@ export const GetUserSchema = z
       invalid_type_error: "'authorization' - deve ser do tipo Bearer Token",
     }),
   })
+  .strict()
   .transform((data) => data as GetUsersInputDTO);
 
 // # CRIAÇÃO DE USUARIO
@@ -105,6 +106,7 @@ export const InsertUserSchema = z
       })
       .min(2),
   })
+  .strict()
   .transform((data) => data as InputUserDTO);
 
 export interface createUserOutputDTO {
@@ -138,6 +140,7 @@ export const LoginSchema = z
       })
       .min(8),
   })
+  .strict()
   .transform((data) => data as LoginInputDTO);
 
 export interface LogoffInputDTO {
@@ -159,6 +162,7 @@ export const LogoffSchema = z
       })
       .min(20),
   })
+  .strict()
   .transform((data) => data as LogoffInputDTO);
 
 // ---------------------------------
@@ -232,6 +236,7 @@ export const UpdateUserSchema = z
       .min(2)
       .optional(),
   })
+  .strict()
   .transform((data) => data as UpdateUserInputDTO);
 
 // ---------------------------------
@@ -261,4 +266,5 @@ export const DeleteUserSchema = z
       })
       .min(20),
   })
+  .strict()
   .transform((data) => data as DeleteUserInputDTO);

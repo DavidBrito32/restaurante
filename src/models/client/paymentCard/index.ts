@@ -1,9 +1,11 @@
 import { GetPaymentClient } from "../../../dto/client";
-import { InsertPaymentDB } from "../../../dto/client/db";
+import { InsertPaymentDB, OPERATOR } from "../../../dto/client/db";
 
 export enum PAYMENTMETHOD {
   DEBIT = "DEBITO",
   CREDIT = "CREDITO",
+  CASH = "DINHEIRO",
+  PIX = "PIX",
 }
 
 export class PaymentModel {
@@ -14,6 +16,7 @@ export class PaymentModel {
     private clientName: string,
     private method: PAYMENTMETHOD,
     private expiresIn: string,
+    private operator: OPERATOR,
     private createdAt: string,
     private cvv: number,
   ) {}
@@ -82,10 +85,19 @@ export class PaymentModel {
     this.cvv = cvv;
   };
 
+  private getOperator = (): OPERATOR => {
+    return this.operator;
+  };
+
+  public setOperator = (operator: OPERATOR): void => {
+    this.operator = operator;
+  };
+
   public getPayment = (): GetPaymentClient => {
     return {
       id: this.getId(),
       idClient: this.getIdClient(),
+      operator: this.getOperator(),
       numberCard: this.getNumberCard(),
       clientName: this.getClientName(),
     };
@@ -97,6 +109,7 @@ export class PaymentModel {
       client_id: this.getIdClient(),
       number_Card: this.getNumberCard(),
       client_name: this.getClientName(),
+      operator: this.getOperator(),
       method: this.getMethod(),
       expires_in: this.getExpiresIn(),
       cvv: this.getCvv(),

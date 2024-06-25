@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { PAYMENTMETHOD } from "../../models/client/paymentCard";
+import { OPERATOR } from "./db";
 
 //SIGNUP
 export interface SignupClientInputDTO {
@@ -71,19 +72,21 @@ export interface LoginClientOutputDTO {
   token: string;
 }
 
-export const LoginClientSchema = z.object({
-  email: z
-    .string({
-      required_error: "'email' -  é um campo obrigatorio",
-      invalid_type_error: "'email' - deve ser enviado no formato string",
-    })
-    .min(8)
-    .email(),
-  password: z.string({
-    required_error: "'password' -  é um campo obrigatorio",
-    invalid_type_error: "'password' - deve ser enviado no formato string",
-  }),
-});
+export const LoginClientSchema = z
+  .object({
+    email: z
+      .string({
+        required_error: "'email' -  é um campo obrigatorio",
+        invalid_type_error: "'email' - deve ser enviado no formato string",
+      })
+      .min(8)
+      .email(),
+    password: z.string({
+      required_error: "'password' -  é um campo obrigatorio",
+      invalid_type_error: "'password' - deve ser enviado no formato string",
+    }),
+  })
+  .transform((data) => data as LoginClientInputDTO);
 
 //UPDATE
 
@@ -165,12 +168,15 @@ export interface FindClientInputDTO {
   authorization: string;
 }
 
-export const FindClientSchema = z.object({
-  authorization: z.string({
-    invalid_type_error: "'authorization' - deve ser enviado no formato string",
-    required_error: "'authorization' - é um dado obrigatorio",
-  }),
-});
+export const FindClientSchema = z
+  .object({
+    authorization: z.string({
+      invalid_type_error:
+        "'authorization' - deve ser enviado no formato string",
+      required_error: "'authorization' - é um dado obrigatorio",
+    }),
+  })
+  .transform((data) => data as FindClientInputDTO);
 
 export interface SavedPaymentMethods {
   numberCard: number;
@@ -391,6 +397,7 @@ export const DeleteAdressClientSchema = z
 export interface GetPaymentClient {
   id: string;
   idClient: string;
+  operator: string;
   numberCard: number;
   clientName: string;
 }
@@ -400,6 +407,7 @@ export interface GetPaymentClientDB {
   client_id: string;
   number_card: number;
   client_name: string;
+  operator: OPERATOR;
   method: PAYMENTMETHOD;
   expires_in: string;
   cvv: number;
@@ -410,6 +418,7 @@ export interface InsertPaymentInputDTO {
   authorization: string;
   numberCard: number;
   clientName: string;
+  operator: OPERATOR;
   method: PAYMENTMETHOD;
   expiresIn: string;
   cvv: number;
@@ -455,6 +464,7 @@ export const InsertPaymentSchema = z
         required_error: "'cvv' - é um dado obrigatorio",
       })
       .min(3),
+      operator: z.enum([OPERATOR.VISA, OPERATOR.MASTERCARD, OPERATOR.MAESTRO, OPERATOR.HIPERCARD, OPERATOR.ELO, OPERATOR.DISCOVER, OPERATOR.AMERICAN_EXPRESS])
   })
   .transform((data) => data as InsertPaymentInputDTO);
 
